@@ -2,7 +2,7 @@
 
 Jarvis Assistant 是一个本地优先的个人 AI Agent 控制台。它以 Web 界面作为当前产品入口，用独立的运行时、工具网关、权限系统、持久化和审计链路执行可观察、可暂停、可恢复的 Agent 任务。
 
-> 当前版本：`0.1.0`（private preview）
+> 当前版本：`1.0.0`（private release）
 
 ![Jarvis Assistant 命令中心](docs/assets/operator-console-x/08-command-chat-view.png)
 
@@ -104,7 +104,7 @@ cd apps/agent-worker && pytest -v
 
 三个 P0 PDF 不进入 Git；下载器从版本化 manifest 读取官方来源，并在写入本地 cache 前校验固定 SHA-256。普通运行不需要下载评测语料，只有完整测试和真实使用评测需要。
 
-版本 `0.1.0` 对应候选 revision 的完整 P0 真实使用评测为 `36/36 passed`。本地评测产生的日志、数据库、Artifact 和结果目录均位于 `.local/`，不会进入仓库。
+版本 `1.0.0` 对应候选 revision 的完整 P0 真实使用评测为 `36/36 passed`。本地评测产生的日志、数据库、Artifact 和结果目录均位于 `.local/`，不会进入仓库。
 
 ## 安全模型
 
@@ -145,7 +145,7 @@ docs/               架构、接口、安全与运行文档
 
 - 当前优先形态是本地 Web Agent 控制台，不是云端聊天服务。
 - 默认使用 single-agent；复杂 multi-agent 编排尚不是首版主路径。
-- 桌面封装、语音唤醒、插件市场和完整 App 自动化不属于 `0.1.0`。
+- 桌面封装、语音唤醒、插件市场和完整 App 自动化不属于 `1.0.0`。
 
 ## 许可
 

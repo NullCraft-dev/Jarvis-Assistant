@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jarvis-worker"
-version = "0.1.0"
+version = "1.0.0"
 description = "Jarvis Python Agent Worker Runtime — 消费 Redis run queue，执行 Agent loop，产出 RuntimeEvent"
 requires-python = ">=3.11"
 dependencies = [

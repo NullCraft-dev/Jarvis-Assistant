@@ -5,4 +5,4 @@
 Go Gateway 通过 EventPump 读取并扇出到 SSE/UI。
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
