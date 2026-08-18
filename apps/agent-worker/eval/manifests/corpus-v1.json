@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "dataset_id": "jarvis-rag-corpus-v1",
+  "description": "Jarvis RAG 预处理、分块、Embedding、检索与端到端评测集第一版",
+  "cases": [
+    "cases/generated-multimodal-smoke/case.json",
+    "cases/nist-ai-rmf-1-0/case.json",
+    "cases/nasa-systems-engineering-handbook/case.json",
+    "cases/irs-publication-15t-2026/case.json",
+    "cases/joss-peat-2025/case.json",
+    "cases/world-bank-data-driven-development/case.json",
+    "cases/unesco-generative-ai-guidance-spanish/case.json",
+    "cases/loc-daddy-long-legs-1913/case.json"
+  ]
+}

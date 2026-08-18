@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+node_modules
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+coverage/
+
+# Logs
+logs/
+.local/logs/
+.local/release-gate/
+.local/preflight/
+.local/data-lifecycle/
+.local/support-bundles/
+.local/release-candidates/
+.local/real-world-usage/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+*.local
+*.key
+*.pem
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE state
+.idea/
+.vscode/*
+!apps/web/.vscode/extensions.json
+
+# Go temporary outputs
+*.test
+*.out
+
+# Go build cache (sandbox workaround)
+.cache/
+
+# Python build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# SQLite / embedded DB files (禁止提交)
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# Runtime artifacts
+tmp/
+/artifacts/
+
+# RAG evaluation local corpora and generated reports
+apps/agent-worker/eval/corpus/documents/*
+!apps/agent-worker/eval/corpus/documents/README.md
+apps/agent-worker/eval/corpus/private/*
+!apps/agent-worker/eval/corpus/private/README.md
+apps/agent-worker/eval/reports/*
+!apps/agent-worker/eval/reports/README.md
+
+# Graphify generated code visualizations
+graphify-out/
+
+# Internal development notes (kept locally, excluded from release commits)
+/AGENTS.md
+/CLAUDE.md
+/AUDIT-*.txt
+/docs/12-development-progress.md

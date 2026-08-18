@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "baseline_id": "rag-promoted-p4-v1",
+  "cohort_id": "rag-promoted-p4-v1",
+  "created_at": "2026-08-02",
+  "source": "production-rag-promoted-replay",
+  "sample_count": 10,
+  "aggregate_metrics": {
+    "candidate.recall@5": 0.9,
+    "candidate.mrr": 1.0,
+    "reranker.recall@5": 0.975,
+    "reranker.mrr": 1.0,
+    "context.evidence_recall": 1.0
+  },
+  "privacy": {
+    "raw_query_included": false,
+    "raw_answer_included": false,
+    "raw_chunk_content_included": false,
+    "embedding_vectors_included": false
+  }
+}

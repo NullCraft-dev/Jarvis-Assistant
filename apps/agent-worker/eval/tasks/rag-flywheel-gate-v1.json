@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "gate_id": "rag-flywheel-release-v1",
+  "minimum_sample_count": 10,
+  "eligible_label_status": "promoted",
+  "metrics": {
+    "candidate.recall@5": {
+      "minimum": 0.8,
+      "maximum_regression": 0.03
+    },
+    "candidate.mrr": {
+      "minimum": 0.8,
+      "maximum_regression": 0.03
+    },
+    "reranker.recall@5": {
+      "minimum": 0.9,
+      "maximum_regression": 0.03
+    },
+    "reranker.mrr": {
+      "minimum": 0.9,
+      "maximum_regression": 0.03
+    },
+    "context.evidence_recall": {
+      "minimum": 1.0,
+      "maximum_regression": 0.0
+    }
+  },
+  "maximum_failure_rates": {
+    "candidate_evidence_missed": 0.35,
+    "reranker_evidence_dropped": 0.15,
+    "context_evidence_dropped": 0.0,
+    "context_truncated": 0.35
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "nasa-systems-engineering-handbook-rev2",
+  "title": "NASA Systems Engineering Handbook Rev 2",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/nasa-systems-engineering-handbook-rev2.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 4122125,
+    "page_count": 356,
+    "sha256": "3153ae2e53e29452d5997efafe280a5f05cd21b43a047e988a17e1dd5207a38e",
+    "source_url": "https://ntrs.nasa.gov/citations/20170001761",
+    "download_url": "https://ntrs.nasa.gov/api/citations/20170001761/downloads/20170001761.pdf",
+    "license": "Public-Use-Permitted",
+    "license_url": "https://ntrs.nasa.gov/citations/20170001761",
+    "attribution": "Hirshorn, Voss, and Bromley, NASA/SP-2016-6105 Rev 2",
+    "license_notes": "NTRS record marks distribution public and public use permitted.",
+    "generator": null,
+    "languages": ["en"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["engineering-handbook", "government-publication"],
+    "layouts": ["multi-column", "section-hierarchy", "headers-footers", "appendices"],
+    "modalities": ["text", "table", "figure", "diagram"],
+    "risks": ["long-document", "reading-order", "figure-caption-linking", "cross-page-context"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": null,
+  "notes": "长文档、图表和附录密集，适合稳定性与跨章节检索。"
+}

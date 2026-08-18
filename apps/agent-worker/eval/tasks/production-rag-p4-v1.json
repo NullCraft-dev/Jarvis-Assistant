@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "suite_id": "production-rag-p4-v1",
+  "description": "P4-2 真实知识库扩展集；user_goal 只包含自然用户表达，内部文档 ID 不进入模型上下文。",
+  "questions": [
+    {
+      "id": "multi-document-resnet-squeezenet",
+      "category": "multi_document",
+      "user_goal": "知识库里 ResNet（arXiv 1512.03385）和 SqueezeNet（arXiv 1602.07360）那两篇论文，在网络结构设计上分别解决了什么问题？请比较它们的核心方法和设计取舍。",
+      "question": "比较 ResNet 与 SqueezeNet 的结构目标、核心方法和取舍。",
+      "expected_document_ids": ["f2a8fc4f-8ae1-5f46-8573-be85166c9975", "c71c340b-f35c-5e98-951f-a7cb851a1a44"],
+      "expected_answer": {
+        "mode": "answerable",
+        "min_citations": 2,
+        "fact_groups": [["残差", "residual"], ["shortcut", "跳跃连接"], ["参数量", "parameter"], ["fire module", "fire模块"]]
+      }
+    },
+    {
+      "id": "table-transformer-complexity",
+      "category": "table",
+      "user_goal": "《Attention Is All You Need》（arXiv 1706.03762）的复杂度表里，self-attention 和 recurrent layer 的每层复杂度、顺序操作数量与最大路径长度分别是什么？",
+      "question": "读取表格并比较 self-attention 与 recurrent layer。",
+      "expected_document_ids": ["9293d42d-8ae4-598e-be55-ea6725b3224e"],
+      "expected_answer": {
+        "mode": "answerable",
+        "min_citations": 1,
+        "fact_groups": [["O(n²d)", "O(n^2d)", "O(n^2 d)"], ["O(nd²)", "O(nd^2)", "O(n d^2)"], ["O(1)"], ["O(n)"]]
+      }
+    },
+    {
+      "id": "formula-transformer-positional-encoding",
+      "category": "formula",
+      "user_goal": "请根据《Attention Is All You Need》（arXiv 1706.03762）写出正弦位置编码的两条公式，并说明不同维度对应的波长范围。",
+      "question": "读取公式并解释位置编码的波长。",
+      "expected_document_ids": ["9293d42d-8ae4-598e-be55-ea6725b3224e"],
+      "expected_answer": {
+        "mode": "answerable",
+        "min_citations": 1,
+        "fact_groups": [["sin"], ["cos"], ["10000"], ["2i/dmodel", "2i/d_model"]]
+      }
+    },
+    {
+      "id": "long-document-decoder-only",
+      "category": "long_document",
+      "user_goal": "在知识库的《AI 大模型面试题精选合集》中，作者为什么认为现在的大模型大多采用 decoder-only？请区分 zero-shot、训练工程和理论表达能力三个角度。",
+      "question": "在长文档中定位 decoder-only 的三方面解释。",
+      "expected_document_ids": ["254874b9-f5ac-5bba-b351-cb483fb39d8a"],
+      "expected_answer": {
+        "mode": "answerable",
+        "min_citations": 1,
+        "fact_groups": [["zero-shot", "零样本"], ["训练效率", "工程实现"], ["低秩", "表达能力"]]
+      }
+    },
+    {
+      "id": "unanswerable-transformer-gpt4",
+      "category": "unanswerable",
+      "user_goal": "《Attention Is All You Need》（arXiv 1706.03762）报告的 GPT-4 在 MMLU 上的准确率是多少？只依据这篇论文回答。",
+      "question": "验证知识库没有该时代之后的事实时能否拒答。",
+      "expected_document_ids": ["9293d42d-8ae4-598e-be55-ea6725b3224e"],
+      "expected_answer": {"mode": "unanswerable", "fact_groups": []}
+    },
+    {
+      "id": "cross-source-scope-conflict",
+      "category": "conflicting_evidence",
+      "user_goal": "《AI 大模型面试题精选合集》提到 encoder 双向注意力可能存在低秩问题，而《Attention Is All You Need》（arXiv 1706.03762）采用 encoder self-attention。两处说法是否直接矛盾？请分别说明证据的论述范围，不要替原文扩大结论。",
+      "question": "综合两份不同范围的证据并避免制造冲突。",
+      "expected_document_ids": ["254874b9-f5ac-5bba-b351-cb483fb39d8a", "9293d42d-8ae4-598e-be55-ea6725b3224e"],
+      "expected_answer": {
+        "mode": "answerable",
+        "min_citations": 2,
+        "fact_groups": [["不直接矛盾", "不能直接判定为矛盾", "论述范围不同"], ["低秩"], ["self-attention", "自注意力"]]
+      }
+    },
+    {
+      "id": "same-title-mobilenet-clarification",
+      "category": "same_title",
+      "user_goal": "请只根据知识库中名为 arXiv 1704.04861.pdf 的其中一份文档，总结 MobileNet 的深度可分离卷积设计。",
+      "question": "同名且不可唯一定位时应请求用户明确版本。",
+      "expected_document_ids": [],
+      "expected_answer": {"mode": "clarification", "fact_groups": []}
+    }
+  ]
+}

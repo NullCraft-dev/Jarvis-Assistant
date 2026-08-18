@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jarvis.local/schemas/rag-evaluation-annotation-v1.json",
+  "title": "Jarvis RAG evaluation annotation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "annotation_version",
+    "text_gold_mode",
+    "review",
+    "pages",
+    "chunking",
+    "queries"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "annotation_version": {"type": "string", "minLength": 1},
+    "text_gold_mode": {"enum": ["exact", "mixed", "semantic"]},
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["annotator", "reviewer", "reviewed_at", "status"],
+      "properties": {
+        "annotator": {"type": "string", "minLength": 1},
+        "reviewer": {"type": ["string", "null"]},
+        "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+        "status": {"enum": ["draft", "reviewed"]}
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["page_number", "expected_route", "nodes", "relations"],
+        "properties": {
+          "page_number": {"type": "integer", "minimum": 1},
+          "expected_route": {"enum": ["native", "structure-model"]},
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "gold_id",
+                "type",
+                "role",
+                "indexable",
+                "text",
+                "order_index"
+              ],
+              "properties": {
+                "gold_id": {"type": "string", "minLength": 1},
+                "type": {
+                  "enum": [
+                    "heading",
+                    "paragraph",
+                    "list",
+                    "caption",
+                    "code",
+                    "table",
+                    "image",
+                    "chart",
+                    "formula"
+                  ]
+                },
+                "role": {"enum": ["content", "metadata", "boilerplate", "decorative"]},
+                "indexable": {"type": "boolean"},
+                "text": {"type": "string"},
+                "order_index": {"type": "integer", "minimum": 0},
+                "bounding_box": {
+                  "type": ["array", "null"],
+                  "minItems": 4,
+                  "maxItems": 4,
+                  "items": {"type": "number"}
+                }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["source_gold_id", "target_gold_id", "type"],
+              "properties": {
+                "source_gold_id": {"type": "string"},
+                "target_gold_id": {"type": "string"},
+                "type": {
+                  "enum": ["contains", "references", "explains", "caption_of", "nearby"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "chunking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["must_keep_together", "allowed_boundaries"],
+      "properties": {
+        "must_keep_together": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "items": {"type": "string"}
+          }
+        },
+        "allowed_boundaries": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "queries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "query_id",
+          "query",
+          "language",
+          "answerable",
+          "evidence_gold_ids",
+          "max_evidence_chunks",
+          "expected_answer_facts",
+          "forbidden_answer_claims"
+        ],
+        "properties": {
+          "query_id": {"type": "string", "minLength": 1},
+          "query": {"type": "string", "minLength": 1},
+          "language": {"type": "string", "minLength": 1},
+          "answerable": {"type": "boolean"},
+          "evidence_gold_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string"}
+          },
+          "hard_negative_gold_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string"}
+          },
+          "max_evidence_chunks": {"type": "integer", "minimum": 1},
+          "expected_answer_facts": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1}
+          },
+          "forbidden_answer_claims": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1}
+          }
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"answerable": {"const": true}}},
+            "then": {
+              "properties": {
+                "evidence_gold_ids": {"minItems": 1},
+                "expected_answer_facts": {"minItems": 1}
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

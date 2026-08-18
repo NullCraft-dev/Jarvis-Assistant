@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "cohort_id": "rag-promoted-p4-v1",
+  "created_at": "2026-08-02",
+  "privacy": {
+    "raw_query_included": false,
+    "raw_chunk_content_included": false
+  },
+  "samples": [
+    {
+      "trace_id": "6963d8f6-cd69-4df5-8836-a0acd193f3fa",
+      "query_hash": "49bca3927e9a615cedeac60bd18755dcce5732fba088cb81ac4f000e0a4bb3ce",
+      "category": "multi_document_comparison"
+    },
+    {
+      "trace_id": "c1151b42-fcf1-4829-97db-4bd3552f148f",
+      "query_hash": "e90bd7aa4a5c534c142a8381f303db0776278c2c232791d94052dfd0cbb1f4a0",
+      "category": "formula_reasoning"
+    },
+    {
+      "trace_id": "45b8c784-1c61-4fee-9013-a2c927a475a0",
+      "query_hash": "76ef88fcb483a8b90bf935167f663b6d33edc3bcdfbd27d1b724e40de920b38b",
+      "category": "architecture_usage"
+    },
+    {
+      "trace_id": "b58b7a99-a525-47ba-a168-7de1d7087851",
+      "query_hash": "3cb1ba24bd6051d0ce7bffc05753a024f6c67fe2a5e2698b117a57b22b1c98ae",
+      "category": "masking_behavior"
+    },
+    {
+      "trace_id": "8e8624dc-50ba-4491-8154-885443a4ecd0",
+      "query_hash": "edf0af170ed94dd581b1706b465ab96c2504b6a0dbe6222139e774d377d987c3",
+      "category": "feed_forward_dimensions"
+    },
+    {
+      "trace_id": "9b1e082a-d24d-4a29-b42c-ba2fe10ec20d",
+      "query_hash": "e872ac14fd62c2614ab8ae54312d946b2589ab4934d52d39ed620eede59b98f6",
+      "category": "positional_encoding"
+    },
+    {
+      "trace_id": "97ac0327-a596-40ad-b9b3-0de0b523ccfe",
+      "query_hash": "d972ead351f3a894018a4157e02e43e86addd8c5945e335ec5e0c1874a6de622",
+      "category": "optimizer_schedule"
+    },
+    {
+      "trace_id": "e4f71b15-216c-40fb-88e8-5d9fc02b4a39",
+      "query_hash": "637463a32cc3de2c03876bca9c9b1d238a181eb3b0f3d544b360ffcb039bb020",
+      "category": "regularization_settings"
+    },
+    {
+      "trace_id": "7187fad9-f6d1-4548-8874-8d30ea09e5a4",
+      "query_hash": "5348a3503c8fc3c3567a6f2ac17becd2e755f492d953681d189b7a6aabc26169",
+      "category": "table_complexity"
+    },
+    {
+      "trace_id": "7ddc378d-95f6-440f-9e72-0e62f1287437",
+      "query_hash": "44e4f9a59842b6372e23a090ea263310ff9d13abc8d5f0e423a1a448755ba064",
+      "category": "candidate_recall_boundary"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+name: RC2 deterministic gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: rc2-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: apps/gateway/go.mod
+          cache-dependency-path: apps/gateway/go.sum
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            apps/web/package-lock.json
+            packages/shared/package-lock.json
+
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: jarvis-assistant
+          python-version: "3.12"
+          auto-activate-base: false
+
+      - name: Install JavaScript dependencies
+        run: |
+          npm ci --prefix packages/shared
+          npm ci --prefix apps/web
+
+      - name: Install Agent Worker dependencies
+        run: conda run -n jarvis-assistant python -m pip install -e "./apps/agent-worker[dev]"
+
+      - name: Fetch hash-locked P0 evaluation fixtures
+        run: |
+          conda run -n jarvis-assistant python apps/agent-worker/eval/runners/fetch_corpus.py \
+            --case nist-ai-rmf-1-0 \
+            --case nasa-systems-engineering-handbook-rev2 \
+            --case world-bank-data-driven-development-2018
+
+      - name: Run deterministic RC2 gate
+        run: scripts/release-gate.sh ci
+
+      - name: Upload gate report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rc2-gate-${{ github.run_id }}
+          path: .local/release-gate/
+          if-no-files-found: error
+          retention-days: 14

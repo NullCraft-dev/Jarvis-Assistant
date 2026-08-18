@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "unesco-generative-ai-guidance-spanish-2024",
+  "title": "Guía para el uso de IA generativa en educación e investigación",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/unesco-generative-ai-guidance-spanish-2024.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1096960,
+    "page_count": 48,
+    "sha256": "4966bbd11969a5463e6fb5717de1b53efef478fbe821a4986e16ba8ae1a4f131",
+    "source_url": "https://unesdoc.unesco.org/ark:/48223/pf0000389227",
+    "download_url": "https://unesdoc.unesco.org/in/rest/annotationSVC/DownloadWatermarkedAttachment/attach_import_2779c7b7-cb65-454a-9a7d-c23bd13628a3?_=389227spa.pdf",
+    "license": "CC-BY-SA-3.0-IGO",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/igo/",
+    "attribution": "UNESCO. 2024. Guía para el uso de IA generativa en educación e investigación.",
+    "license_notes": "Images marked with an asterisk are excluded from the CC license; retained only in the local evaluation cache.",
+    "generator": null,
+    "languages": ["es"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["international-guidance", "translated-report"],
+    "layouts": ["single-column", "callout-boxes", "table-of-contents"],
+    "modalities": ["text", "table", "figure", "diagram"],
+    "risks": ["non-english", "accented-text", "heading-hierarchy", "caption-linking"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": null,
+  "notes": "用于非英语解析以及后续跨语言 Embedding/query 评测。"
+}

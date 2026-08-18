@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jarvis.local/schemas/rag-evaluation-case-v1.json",
+  "title": "Jarvis RAG evaluation case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "title",
+    "status",
+    "split",
+    "document",
+    "coverage",
+    "evaluation_stages",
+    "annotation_path"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "status": {
+      "enum": ["planned", "annotated", "verified", "quarantined"]
+    },
+    "split": {
+      "enum": ["development", "regression", "blind", "quarantine"]
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "relative_path",
+        "mime_type",
+        "size_bytes",
+        "page_count",
+        "sha256",
+        "source_url",
+        "download_url",
+        "license",
+        "license_url",
+        "attribution",
+        "license_notes",
+        "generator",
+        "languages",
+        "privacy"
+      ],
+      "properties": {
+        "kind": {"enum": ["public", "private", "generated"]},
+        "relative_path": {"type": "string", "minLength": 1},
+        "mime_type": {"const": "application/pdf"},
+        "size_bytes": {"type": ["integer", "null"], "minimum": 1},
+        "page_count": {"type": ["integer", "null"], "minimum": 1},
+        "sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_url": {"type": ["string", "null"]},
+        "download_url": {"type": ["string", "null"]},
+        "license": {"type": "string", "minLength": 1},
+        "license_url": {"type": ["string", "null"]},
+        "attribution": {"type": "string", "minLength": 1},
+        "license_notes": {"type": ["string", "null"]},
+        "generator": {"type": ["string", "null"]},
+        "languages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "privacy": {"enum": ["public", "private", "sensitive"]}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["document_types", "layouts", "modalities", "risks"],
+      "properties": {
+        "document_types": {"$ref": "#/$defs/tags"},
+        "layouts": {"$ref": "#/$defs/tags"},
+        "modalities": {"$ref": "#/$defs/tags"},
+        "risks": {"$ref": "#/$defs/tags"}
+      }
+    },
+    "evaluation_stages": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "preprocessing",
+          "chunking",
+          "embedding",
+          "retrieval",
+          "generation",
+          "end_to_end"
+        ]
+      }
+    },
+    "annotation_path": {"type": ["string", "null"]},
+    "notes": {"type": "string"}
+  },
+  "$defs": {
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

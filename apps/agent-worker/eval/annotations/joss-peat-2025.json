@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "case_id": "joss-peat-2025",
+  "annotation_version": "draft-v1",
+  "text_gold_mode": "mixed",
+  "review": {
+    "annotator": "codex-assisted-visual-annotation",
+    "reviewer": null,
+    "reviewed_at": null,
+    "status": "draft"
+  },
+  "pages": [
+    {
+      "page_number": 1,
+      "expected_route": "structure-model",
+      "nodes": [
+        {
+          "gold_id": "p1-logo",
+          "type": "image",
+          "role": "decorative",
+          "indexable": false,
+          "text": "",
+          "order_index": 0,
+          "bounding_box": [18.0, 11.9, 174.0, 71.7]
+        },
+        {
+          "gold_id": "p1-title",
+          "type": "heading",
+          "role": "content",
+          "indexable": true,
+          "text": "PDF Entity Annotation Tool (PEAT)",
+          "order_index": 1,
+          "bounding_box": [166.9, 131.2, 435.0, 156.3]
+        },
+        {
+          "gold_id": "p1-authors",
+          "type": "paragraph",
+          "role": "metadata",
+          "indexable": true,
+          "text": "Christopher G. Stahl, Kristan J. Markey, Brian C. Jewell, Dahnish Shams, Michele M. Taylor, A. Amina Wilkins, Sean Watford, Andy Shapiro, and Michelle Angrish",
+          "order_index": 2,
+          "bounding_box": [166.9, 172.8, 526.5, 217.8]
+        },
+        {
+          "gold_id": "p1-affiliations",
+          "type": "paragraph",
+          "role": "metadata",
+          "indexable": true,
+          "text": "Oak Ridge National Laboratory, USA; Office of Research and Development, United States Environmental Protection Agency.",
+          "order_index": 3,
+          "bounding_box": [166.9, 224.9, 518.3, 249.0]
+        },
+        {
+          "gold_id": "p1-sidebar-metadata",
+          "type": "list",
+          "role": "metadata",
+          "indexable": true,
+          "text": "DOI: 10.21105/joss.05336. Software links: Review, Repository, Archive. Editor: Ana Trisovic. Reviewers: @flor14 and @RuneBlaze. Submitted: 24 January 2023. Published: 08 April 2025. License: CC BY 4.0.",
+          "order_index": 4,
+          "bounding_box": [28.1, 249.3, 157.7, 490.9]
+        },
+        {
+          "gold_id": "p1-disclaimer",
+          "type": "paragraph",
+          "role": "metadata",
+          "indexable": false,
+          "text": "The views expressed in this manuscript are those of the authors and do not necessarily reflect the views or policies of the U.S. EPA, UT-Battelle, LLC, or U.S. Department of Energy.",
+          "order_index": 5,
+          "bounding_box": [166.9, 264.8, 552.8, 302.5]
+        },
+        {
+          "gold_id": "p1-summary-heading",
+          "type": "heading",
+          "role": "content",
+          "indexable": true,
+          "text": "Summary",
+          "order_index": 6,
+          "bounding_box": [166.9, 316.9, 223.2, 336.8]
+        },
+        {
+          "gold_id": "p1-summary-problem",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "Existing workflows for creating labeled scientific text datasets are labor intensive. Converting PDF to plain text can lose document structure and provenance, and extraction can fail because of sequential blocks, multiple columns, font encodings, plots, and tables. PEAT was developed so users can annotate publications in their current print format and capture annotations in a machine-readable format.",
+          "order_index": 7,
+          "bounding_box": [166.4, 344.9, 554.7, 658.3]
+        },
+        {
+          "gold_id": "p1-summary-solution",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "PEAT allows annotations to be completed on the original PDF document structure without first converting it to plain text. Users can create schemas for domain-specific annotation tags, supporting easier and more accurate machine-readable annotation.",
+          "order_index": 8,
+          "bounding_box": [166.4, 661.7, 553.0, 736.0]
+        },
+        {
+          "gold_id": "p1-footer",
+          "type": "caption",
+          "role": "boilerplate",
+          "indexable": false,
+          "text": "Stahl et al. (2025). PDF Entity Annotation Tool (PEAT). Journal of Open Source Software, 10(108), 5336. Page 1.",
+          "order_index": 9,
+          "bounding_box": [39.3, 775.2, 552.8, 789.8]
+        }
+      ],
+      "relations": []
+    },
+    {
+      "page_number": 2,
+      "expected_route": "native",
+      "nodes": [
+        {
+          "gold_id": "p2-logo",
+          "type": "image",
+          "role": "decorative",
+          "indexable": false,
+          "text": "",
+          "order_index": 0,
+          "bounding_box": [18.0, 11.9, 174.0, 71.7]
+        },
+        {
+          "gold_id": "p2-statement-heading",
+          "type": "heading",
+          "role": "content",
+          "indexable": true,
+          "text": "Statement of need",
+          "order_index": 1,
+          "bounding_box": [166.9, 96.0, 279.9, 115.9]
+        },
+        {
+          "gold_id": "p2-need",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "The volume of publications makes manual extraction unsustainable, while machine-learning development requires labeled datasets. PDFs preserve visual structure but do not readily support extraction into other formats; coordinates and formatting can be lost during PDF-to-text conversion.",
+          "order_index": 2,
+          "bounding_box": [166.5, 123.5, 554.7, 329.4]
+        },
+        {
+          "gold_id": "p2-existing-tools",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "BRAT, TeamTat, GATE, and Dextr first convert PDF to plain text, which can lose double or triple columns, tables, words, lines, and layout. PDFAnno allowed annotation layers over PDFs but is no longer maintained; React-PDF Annot provides basic PDFJS annotations and served as a baseline for PEAT.",
+          "order_index": 3,
+          "bounding_box": [166.5, 332.8, 554.1, 478.8]
+        },
+        {
+          "gold_id": "p2-peat-design",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "PEAT lets users annotate and label data directly in PDF format while retaining the intended document structure. It is a portable standalone Electron application for Windows, Linux, and Macintosh.",
+          "order_index": 4,
+          "bounding_box": [166.5, 482.2, 554.7, 580.5]
+        },
+        {
+          "gold_id": "p2-footer",
+          "type": "caption",
+          "role": "boilerplate",
+          "indexable": false,
+          "text": "Stahl et al. (2025). PDF Entity Annotation Tool (PEAT). Journal of Open Source Software, 10(108), 5336. Page 2.",
+          "order_index": 5,
+          "bounding_box": [39.3, 775.2, 552.8, 789.8]
+        }
+      ],
+      "relations": []
+    },
+    {
+      "page_number": 3,
+      "expected_route": "structure-model",
+      "nodes": [
+        {
+          "gold_id": "p3-logo",
+          "type": "image",
+          "role": "decorative",
+          "indexable": false,
+          "text": "",
+          "order_index": 0,
+          "bounding_box": [18.0, 11.9, 174.0, 71.7]
+        },
+        {
+          "gold_id": "p3-interface-image",
+          "type": "image",
+          "role": "content",
+          "indexable": true,
+          "text": "Screenshot of the PEAT user interface showing a schema/entity selector, annotation table, search controls, and a PDF page.",
+          "order_index": 1,
+          "bounding_box": [166.9, 99.2, 552.8, 314.3]
+        },
+        {
+          "gold_id": "p3-interface-caption",
+          "type": "caption",
+          "role": "content",
+          "indexable": true,
+          "text": "Figure 1: PEAT User Interface.",
+          "order_index": 2,
+          "bounding_box": [300.5, 321.6, 419.1, 334.7]
+        },
+        {
+          "gold_id": "p3-features",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "PEAT embeds its dependencies and has a 500 MB footprint. It loads local PDFs, supports standard and customizable annotation types, labels, entities, colors, schema import and export, PDF X/Y coordinates, search, annotation manipulation, and save/load progress. Completed annotations, full text, and metadata can be exported as JSON for NLP applications such as spaCy or PyTorch.",
+          "order_index": 3,
+          "bounding_box": [166.5, 353.6, 554.1, 475.8]
+        },
+        {
+          "gold_id": "p3-conclusion-heading",
+          "type": "heading",
+          "role": "content",
+          "indexable": true,
+          "text": "Conclusion and Future Work",
+          "order_index": 4,
+          "bounding_box": [166.9, 489.9, 340.5, 509.8]
+        },
+        {
+          "gold_id": "p3-conclusion",
+          "type": "paragraph",
+          "role": "content",
+          "indexable": true,
+          "text": "PEAT produces machine-readable annotated datasets from native PDFs and supports standard or custom named-entity annotations. Proposed future features include collaborative annotation, hierarchical relationships, ontology-based automatic annotation, and a pluggable architecture for generating and aligning text layers or segments.",
+          "order_index": 5,
+          "bounding_box": [166.9, 517.4, 554.7, 663.5]
+        },
+        {
+          "gold_id": "p3-ack-heading",
+          "type": "heading",
+          "role": "metadata",
+          "indexable": false,
+          "text": "Acknowledgements",
+          "order_index": 6,
+          "bounding_box": [166.9, 677.6, 281.3, 697.5]
+        },
+        {
+          "gold_id": "p3-ack-part1",
+          "type": "paragraph",
+          "role": "metadata",
+          "indexable": false,
+          "text": "The manuscript was authored by UT-Battelle under a U.S. Department of Energy contract and sponsored by the U.S. Environmental Protection Agency.",
+          "order_index": 7,
+          "bounding_box": [166.5, 705.2, 554.4, 755.6]
+        },
+        {
+          "gold_id": "p3-footer",
+          "type": "caption",
+          "role": "boilerplate",
+          "indexable": false,
+          "text": "Stahl et al. (2025). PDF Entity Annotation Tool (PEAT). Journal of Open Source Software, 10(108), 5336. Page 3.",
+          "order_index": 8,
+          "bounding_box": [39.3, 775.2, 552.8, 789.8]
+        }
+      ],
+      "relations": [
+        {
+          "source_gold_id": "p3-interface-caption",
+          "target_gold_id": "p3-interface-image",
+          "type": "caption_of"
+        },
+        {
+          "source_gold_id": "p2-peat-design",
+          "target_gold_id": "p3-interface-image",
+          "type": "references"
+        }
+      ]
+    },
+    {
+      "page_number": 4,
+      "expected_route": "native",
+      "nodes": [
+        {
+          "gold_id": "p4-logo",
+          "type": "image",
+          "role": "decorative",
+          "indexable": false,
+          "text": "",
+          "order_index": 0,
+          "bounding_box": [18.0, 11.9, 174.0, 71.7]
+        },
+        {
+          "gold_id": "p4-ack-part2",
+          "type": "paragraph",
+          "role": "metadata",
+          "indexable": false,
+          "text": "The United States Government retains a license to publish or reproduce the manuscript for government purposes. The views are those of the authors and mention of products does not imply U.S. government or EPA endorsement.",
+          "order_index": 1,
+          "bounding_box": [166.5, 97.7, 554.7, 195.9]
+        },
+        {
+          "gold_id": "p4-references-heading",
+          "type": "heading",
+          "role": "content",
+          "indexable": true,
+          "text": "References",
+          "order_index": 2,
+          "bounding_box": [166.9, 210.1, 231.8, 230.0]
+        },
+        {
+          "gold_id": "p4-references",
+          "type": "list",
+          "role": "content",
+          "indexable": true,
+          "text": "References include PyTorch 2, Electron, GATE, spaCy, ISO 32000-2:2020 PDF 2.0, TeamTat, PDF.js, PDFAnno, brat, React-PDF-Highlighter, Dextr, U.S. publication output statistics, and graph-based PDF layout analysis.",
+          "order_index": 3,
+          "bounding_box": [166.9, 237.6, 554.7, 730.4]
+        },
+        {
+          "gold_id": "p4-footer",
+          "type": "caption",
+          "role": "boilerplate",
+          "indexable": false,
+          "text": "Stahl et al. (2025). PDF Entity Annotation Tool (PEAT). Journal of Open Source Software, 10(108), 5336. Page 4.",
+          "order_index": 4,
+          "bounding_box": [39.3, 775.2, 552.8, 789.8]
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "chunking": {
+    "must_keep_together": [
+      ["p1-title", "p1-authors", "p1-affiliations"],
+      ["p1-summary-heading", "p1-summary-problem", "p1-summary-solution"],
+      ["p3-interface-image", "p3-interface-caption", "p3-features"],
+      ["p3-conclusion-heading", "p3-conclusion"],
+      ["p3-ack-heading", "p3-ack-part1", "p4-ack-part2"],
+      ["p4-references-heading", "p4-references"]
+    ],
+    "allowed_boundaries": [
+      "after:p1-affiliations",
+      "after:p1-summary-solution",
+      "after:p2-need",
+      "after:p2-existing-tools",
+      "after:p2-peat-design",
+      "after:p3-features",
+      "after:p3-conclusion",
+      "after:p4-ack-part2"
+    ]
+  },
+  "queries": [
+    {
+      "query_id": "peat-q1-direct-pdf",
+      "query": "Why does PEAT annotate the original PDF instead of converting it to plain text first?",
+      "language": "en",
+      "answerable": true,
+      "evidence_gold_ids": ["p1-summary-problem", "p1-summary-solution", "p2-existing-tools"],
+      "hard_negative_gold_ids": ["p3-features", "p4-references"],
+      "max_evidence_chunks": 3,
+      "expected_answer_facts": [
+        "Plain-text conversion can lose PDF structure, layout, coordinates, and provenance.",
+        "Direct annotation preserves the familiar rendered document and produces machine-readable labels."
+      ],
+      "forbidden_answer_claims": ["PEAT requires every PDF to be converted to plain text before annotation."]
+    },
+    {
+      "query_id": "peat-q2-platforms",
+      "query": "Which operating systems does the paper say PEAT supports?",
+      "language": "en",
+      "answerable": true,
+      "evidence_gold_ids": ["p2-peat-design"],
+      "hard_negative_gold_ids": ["p1-sidebar-metadata"],
+      "max_evidence_chunks": 1,
+      "expected_answer_facts": ["Windows, Linux, and Macintosh are supported."],
+      "forbidden_answer_claims": ["PEAT only supports Linux."]
+    },
+    {
+      "query_id": "peat-q3-export",
+      "query": "What does PEAT export after document annotation?",
+      "language": "en",
+      "answerable": true,
+      "evidence_gold_ids": ["p3-features"],
+      "hard_negative_gold_ids": ["p2-existing-tools"],
+      "max_evidence_chunks": 1,
+      "expected_answer_facts": ["It exports labeled data, full text, and associated metadata as JSON."],
+      "forbidden_answer_claims": ["It exports only a flattened PDF image."]
+    },
+    {
+      "query_id": "peat-q4-footprint",
+      "query": "What application footprint is reported for PEAT?",
+      "language": "en",
+      "answerable": true,
+      "evidence_gold_ids": ["p3-features"],
+      "hard_negative_gold_ids": ["p1-summary-solution"],
+      "max_evidence_chunks": 1,
+      "expected_answer_facts": ["The reported footprint is 500 MB because dependencies are embedded."],
+      "forbidden_answer_claims": ["The reported footprint is 500 GB."]
+    },
+    {
+      "query_id": "peat-q5-future-work",
+      "query": "Which future capabilities are proposed for PEAT?",
+      "language": "en",
+      "answerable": true,
+      "evidence_gold_ids": ["p3-conclusion"],
+      "hard_negative_gold_ids": ["p3-features"],
+      "max_evidence_chunks": 1,
+      "expected_answer_facts": [
+        "The paper proposes collaborative annotation and hierarchical relationships.",
+        "It also proposes ontology-based auto annotation and pluggable text-layer alignment."
+      ],
+      "forbidden_answer_claims": ["All proposed collaboration features are already implemented."]
+    },
+    {
+      "query_id": "peat-q6-unanswerable-cloud",
+      "query": "Which cloud provider hosts PEAT's managed collaboration service?",
+      "language": "en",
+      "answerable": false,
+      "evidence_gold_ids": [],
+      "hard_negative_gold_ids": ["p2-peat-design", "p3-conclusion"],
+      "max_evidence_chunks": 1,
+      "expected_answer_facts": [],
+      "forbidden_answer_claims": ["The paper identifies AWS, Azure, or Google Cloud as a PEAT hosting provider."]
+    },
+    {
+      "query_id": "peat-q7-cross-language",
+      "query": "PEAT 为什么选择直接在 PDF 原始版式上进行标注？",
+      "language": "zh-CN",
+      "answerable": true,
+      "evidence_gold_ids": ["p1-summary-problem", "p1-summary-solution", "p2-existing-tools"],
+      "hard_negative_gold_ids": ["p4-references"],
+      "max_evidence_chunks": 3,
+      "expected_answer_facts": ["转换为纯文本可能丢失版式、坐标、结构和来源信息。", "直接标注可以保留原始文档结构并输出机器可读数据。"],
+      "forbidden_answer_claims": ["PEAT 必须先把 PDF 转换成纯文本。"]
+    }
+  ]
+}

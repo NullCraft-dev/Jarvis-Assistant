@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "suite_id": "production-rag-p0-v1",
+  "document": {
+    "title": "Attention Is All You Need",
+    "document_id": "9293d42d-8ae4-598e-be55-ea6725b3224e"
+  },
+  "questions": [
+    {
+      "id": "transformer-base-dimensions",
+      "question": "Transformer base model 的 d_model、注意力头数量 h，以及每个注意力头的 d_k 和 d_v 分别是多少？",
+      "expected_facts": ["d_model=512", "h=8", "d_k=64", "d_v=64"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["d_model=512"], ["h=8"], ["d_k = d_v = 64", "d_k=64"], ["d_k = d_v = 64", "d_v=64"]]}
+    },
+    {
+      "id": "encoder-decoder-stacks",
+      "question": "Transformer 的 encoder 和 decoder 各有多少层？每个 encoder layer 和 decoder layer 分别包含哪些子层？",
+      "expected_facts": ["encoder N=6", "decoder N=6", "encoder two sub-layers", "decoder three sub-layers"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["编码器（Encoder）由 N = 6", "encoder N=6"], ["解码器（Decoder）同样由 N = 6", "decoder N=6"], ["两个子层", "two sub-layers"], ["三个子层", "third sub-layer", "three sub-layers"]]}
+    },
+    {
+      "id": "scaled-dot-product",
+      "question": "Scaled dot-product attention 为什么要除以 sqrt(d_k)？论文如何解释不缩放时的问题？",
+      "expected_facts": ["scale by sqrt(d_k)", "large dot products", "softmax small gradients"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["sqrt(d_k)", "\\sqrt{d_k}"], ["点积的数值会变得非常大", "large dot products"], ["梯度极其微小", "small gradients"]]}
+    },
+    {
+      "id": "three-attention-applications",
+      "question": "论文中的 Transformer 以哪三种方式使用 multi-head attention？",
+      "expected_facts": ["encoder-decoder attention", "encoder self-attention", "decoder masked self-attention"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["encoder-decoder attention"], ["encoder 中的 self-attention", "encoder self-attention"], ["decoder 中的 self-attention", "decoder self-attention"]]}
+    },
+    {
+      "id": "decoder-mask",
+      "question": "Decoder self-attention 为什么需要 mask，论文具体如何实现这个 mask？",
+      "expected_facts": ["preserve auto-regressive property", "prevent subsequent positions", "set illegal softmax inputs to negative infinity"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["保持自回归", "auto-regressive"], ["不能看到后续", "prevent subsequent"], ["非法连接", "negative infinity", "−∞"]]}
+    },
+    {
+      "id": "position-wise-ffn",
+      "question": "Position-wise feed-forward network 使用什么激活函数？输入输出维度和中间层维度分别是多少？",
+      "expected_facts": ["ReLU", "d_model=512", "d_ff=2048"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["ReLU"], ["d_model=512"], ["d_ff=2048"]]}
+    },
+    {
+      "id": "positional-encoding",
+      "question": "论文采用的 sinusoidal positional encoding 公式是什么？作者为什么选择这种函数？",
+      "expected_facts": ["sin", "cos", "geometric wavelengths", "relative positions"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["sin"], ["cos"], ["几何级数", "geometric"], ["相对位置", "relative position"]]}
+    },
+    {
+      "id": "optimizer-schedule",
+      "question": "训练使用的 Adam 参数 beta1、beta2、epsilon 和 warmup_steps 分别是多少？学习率如何变化？",
+      "expected_facts": ["beta1=0.9", "beta2=0.98", "epsilon=1e-9", "warmup_steps=4000"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["β1=0.9", "beta1=0.9"], ["β2=0.98", "beta2=0.98"], ["ε=10⁻⁹", "epsilon=1e-9"], ["warmup_steps=4000"]]}
+    },
+    {
+      "id": "regularization",
+      "question": "Transformer base model 使用了哪些 dropout 和 label smoothing 设置？",
+      "expected_facts": ["P_drop=0.1", "epsilon_ls=0.1"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["P_drop=0.1"], ["ε_ls=0.1", "epsilon_ls=0.1"]]}
+    },
+    {
+      "id": "complexity-table",
+      "question": "论文表格如何比较 self-attention 与 recurrent layer 的每层复杂度、顺序操作数量和最大路径长度？",
+      "expected_facts": ["self-attention O(n^2 d)", "recurrent O(n d^2)", "self-attention sequential O(1)", "recurrent sequential O(n)"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["Self-Attention：O(n² · d)", "self-attention O(n^2 d)"], ["Recurrent：O(n · d²)", "recurrent O(n d^2)"], ["Self-Attention：O(1)"], ["Recurrent：O(n)"]]}
+    },
+    {
+      "id": "training-cost",
+      "question": "Transformer base 和 big model 分别训练了多少 steps、使用多少块 P100 GPU、耗时多久？",
+      "expected_facts": ["base 100000 steps", "base 12 hours", "big 300000 steps", "big 3.5 days", "8 P100 GPUs"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["base models | 100,000 steps", "base 100000 steps"], ["12 小时", "12 hours"], ["big models | 300,000 steps", "big 300000 steps"], ["3.5 天", "3.5 days"], ["8 块 NVIDIA P100", "8 P100"]]}
+    },
+    {
+      "id": "beam-search",
+      "question": "机器翻译实验的 beam size、length penalty alpha 和最大输出长度设置分别是什么？",
+      "expected_facts": ["beam size=4", "alpha=0.6", "maximum output length=input length+50"],
+      "expected_answer": {"mode": "answerable", "min_citations": 1, "fact_groups": [["beam size（束搜索宽度）：4", "beam size=4"], ["α（长度惩罚系数）：0.6", "alpha=0.6"], ["input length + 50", "input length+50"]]}
+    }
+  ]
+}

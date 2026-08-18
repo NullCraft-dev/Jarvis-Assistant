@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "loc-daddy-long-legs-1913",
+  "title": "Daddy-Long-Legs (1913 scanned edition)",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/loc-daddy-long-legs-1913.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 61071387,
+    "page_count": 320,
+    "sha256": "886bfccbfa57f79d15cc3f226fe7f4bda6aaacbb82356da7788623ca583687e3",
+    "source_url": "https://www.loc.gov/item/14010516/",
+    "download_url": "https://tile.loc.gov/storage-services/public/gdcmassbookdig/daddylonglegs00webs_2/daddylonglegs00webs_2.pdf",
+    "license": "Public-Domain",
+    "license_url": "https://www.loc.gov/collections/selected-digitized-books/about-this-collection/rights-and-access/",
+    "attribution": "Webster, Jean. Daddy-Long-Legs. New York: The Century Co., 1913. Library of Congress.",
+    "license_notes": "The Library of Congress Selected Digitized Books collection states that the books are public domain and free to use and reuse.",
+    "generator": null,
+    "languages": ["en"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["scanned-book", "historical-book", "epistolary-fiction"],
+    "layouts": ["scanned-pages", "illustrated-pages", "headers-footers"],
+    "modalities": ["text", "image", "illustration"],
+    "risks": ["ocr-required", "scan-noise", "historical-font", "page-number-noise", "illustration-caption-linking"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": null,
+  "notes": "公共领域真实扫描书，覆盖 OCR、插图和页码噪声。"
+}

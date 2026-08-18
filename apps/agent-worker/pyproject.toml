@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=69.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jarvis-worker"
+version = "0.1.0"
+description = "Jarvis Python Agent Worker Runtime — 消费 Redis run queue，执行 Agent loop，产出 RuntimeEvent"
+requires-python = ">=3.11"
+dependencies = [
+    "redis>=5.0,<6.0",
+    "httpx>=0.27,<1.0",
+    "python-dotenv>=1.0,<2.0",
+    "sqlalchemy[asyncio]>=2.0,<3.0",
+    "asyncpg>=0.29,<1.0",
+    "alembic>=1.14,<2.0",
+    "pydantic>=2.0,<3.0",
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    # MCP Python SDK v1 是当前稳定线；v2 在 2026-07 仍为预发布，先显式阻止破坏性升级。
+    "mcp>=1.27,<2.0",
+    # Runtime 内部状态图；不替代 ToolGateway、PermissionManager 或 Storage。
+    "langgraph>=0.2,<1.0",
+    # P6 模型适配层。Core 显式锁定，供应商 integration 只实现项目 ModelProvider。
+    "langchain-core==1.5.1",
+    "langchain-openai==1.4.1",
+    "langchain-deepseek==1.1.0",
+    "pymupdf>=1.28,<1.29",
+    "pgvector>=0.4,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "fakeredis[lua]>=2.20",
+    "pytest-asyncio>=0.24,<1.0",
+    "ruff>=0.12,<1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+# 全库先启用不会被历史排版噪声淹没的高风险基线；修改文件由
+# scripts/check-python-quality.sh 追加严格规则。
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

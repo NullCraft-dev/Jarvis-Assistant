@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "case_set": "cases-v1.csv",
+  "profiles": {
+    "ui_upload": {
+      "kind": "ui_flow",
+      "requires_fixture": true,
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "批准前不写入 Artifact、Document 或 Job",
+        "批准后同一内容只有一个 Artifact、Document 和活动 Job lineage",
+        "页面终态与持久化终态一致"
+      ]
+    },
+    "multi_document_evidence": {
+      "kind": "evidence_rubric",
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "指定文档全部进入 document coverage",
+        "每份指定文档至少有一个可追溯 citation",
+        "比较结论能够映射到对应文档证据",
+        "证据不足或不可比处明确限制结论"
+      ],
+      "non_requirements": [
+        "不以每份文档的最少 chunk 数或最少页数作为通过门槛",
+        "如需新增证据深度门槛，必须升级本合同版本后再执行"
+      ]
+    },
+    "runtime_refresh": {
+      "kind": "runtime_fault",
+      "requires_task_input": true,
+      "runtime_ids": "required",
+      "operator_actions": [
+        "观察到至少一个已持久化 ToolCall 且 Run 仍为 running 后刷新页面",
+        "等待同一 Run 进入终态"
+      ],
+      "pass_invariants": [
+        "刷新前后 task_id 与 run_id 不变",
+        "要求的读取或工具效果各有一次持久化成功证据",
+        "没有重复 ToolCall、重复任务或双终态"
+      ]
+    },
+    "runtime_pause": {
+      "kind": "runtime_control",
+      "runtime_ids": "required",
+      "allow_shared_run_lineage": true,
+      "pass_invariants": [
+        "暂停请求幂等且状态稳定为 paused",
+        "刷新后仍显示同一持久化状态",
+        "暂停期间不得继续提交新副作用"
+      ]
+    },
+    "runtime_resume": {
+      "kind": "runtime_control",
+      "runtime_ids": "required",
+      "allow_shared_run_lineage": true,
+      "pass_invariants": [
+        "恢复沿用同一任务与运行 lineage",
+        "恢复点之后不重复已经提交的副作用",
+        "最终只产生一个终态"
+      ]
+    },
+    "runtime_cancel": {
+      "kind": "runtime_control",
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "取消请求幂等并收敛到 cancelled",
+        "取消后不再调度新步骤或副作用",
+        "刷新后终态保持一致"
+      ]
+    },
+    "recoverable_retry": {
+      "kind": "runtime_recovery",
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "只有可恢复错误允许重试",
+        "重试从持久化恢复点继续",
+        "已完成的副作用不重复执行"
+      ]
+    },
+    "pending_permission_restart": {
+      "kind": "runtime_fault",
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "重启前后的权限请求 ID 与运行 lineage 不变",
+        "批准只能消费一次",
+        "工具效果最多执行一次"
+      ]
+    },
+    "post_approval_worker_crash": {
+      "kind": "runtime_fault",
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "已批准权限不会被重复请求或重复消费",
+        "工具效果使用幂等键恢复且最多执行一次",
+        "恢复后只有一个终态"
+      ]
+    },
+    "ingestion_worker_crash": {
+      "kind": "runtime_fault",
+      "requires_fixture": true,
+      "runtime_ids": "optional",
+      "pass_invariants": [
+        "同一业务内容只有一个 Document 和一个活动 Job lineage",
+        "ready 时 chunk/vector 非零且唯一，或 failed 时 attempts 已耗尽且 next_retry_at/lease_until 为空",
+        "不得把可重试的 failed 中间态提前判为终态"
+      ]
+    },
+    "runtime_bus_replacement": {
+      "kind": "runtime_fault",
+      "runtime_ids": "required",
+      "pass_invariants": [
+        "Storage 真源能够重建 pending permission 与运行状态",
+        "空 Runtime Bus 不得制造第二个任务、运行或权限请求",
+        "恢复后副作用最多执行一次"
+      ]
+    },
+    "startup_preflight": {
+      "kind": "operational_check",
+      "runtime_ids": "optional",
+      "pass_invariants": [
+        "缺失依赖被明确识别且错误可操作",
+        "检查不得启动不可回收的后台运行",
+        "敏感配置值不得出现在 UI、日志或证据中"
+      ]
+    }
+  },
+  "fixtures": {
+    "nist_ai_rmf": {
+      "path": "apps/agent-worker/eval/corpus/documents/nist-ai-rmf-1-0.pdf",
+      "filename": "nist-ai-rmf-1-0.pdf",
+      "size_bytes": 1946127,
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "uniqueness_group": "rag_write_content",
+      "must_be_new_in_workspace": true
+    },
+    "nasa_handbook": {
+      "path": "apps/agent-worker/eval/corpus/documents/nasa-systems-engineering-handbook-rev2.pdf",
+      "filename": "nasa-systems-engineering-handbook-rev2.pdf",
+      "size_bytes": 4122125,
+      "sha256": "3153ae2e53e29452d5997efafe280a5f05cd21b43a047e988a17e1dd5207a38e",
+      "uniqueness_group": "rag_write_content",
+      "must_be_new_in_workspace": true
+    },
+    "long_pdf_crash": {
+      "path": "apps/agent-worker/eval/corpus/documents/world-bank-data-driven-development-2018.pdf",
+      "filename": "world-bank-data-driven-development-2018.pdf",
+      "size_bytes": 10186138,
+      "sha256": "59e2044ba1963f34d5897fd42262e7232a81e39a276405d9360f5e932b355cad",
+      "uniqueness_group": "rag_write_content",
+      "must_be_new_in_workspace": true
+    }
+  },
+  "bindings": {
+    "RAG-06": {"profiles": ["ui_upload"], "fixtures": ["nist_ai_rmf"]},
+    "RAG-08": {"profiles": ["ui_upload"], "fixtures": ["nasa_handbook"]},
+    "RAG-09": {"profiles": ["multi_document_evidence"], "fixtures": ["nist_ai_rmf", "nasa_handbook"]},
+    "REC-01": {
+      "profiles": ["runtime_refresh"],
+      "task_input": "请逐个读取 project/src/api.ts、project/src/worker.py 和 project/src/clean.ts，分析它们的主要职责、TODO/FIXME 和相互关系，给出带路径的报告；不要修改任何内容。"
+    },
+    "REC-02": {"profiles": ["runtime_pause"]},
+    "REC-03": {"profiles": ["runtime_resume"]},
+    "REC-04": {"profiles": ["runtime_cancel"]},
+    "REC-05": {"profiles": ["recoverable_retry"]},
+    "REC-06": {"profiles": ["pending_permission_restart"]},
+    "REC-07": {"profiles": ["post_approval_worker_crash"]},
+    "REC-08": {"profiles": ["ingestion_worker_crash"], "fixtures": ["long_pdf_crash"]},
+    "REC-09": {"profiles": ["runtime_bus_replacement"]},
+    "OPS-01": {"profiles": ["startup_preflight"]}
+  }
+}

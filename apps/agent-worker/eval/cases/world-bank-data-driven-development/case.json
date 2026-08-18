@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "world-bank-data-driven-development-2018",
+  "title": "Information and Communications for Development 2018",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/world-bank-data-driven-development-2018.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 10186138,
+    "page_count": 177,
+    "sha256": "59e2044ba1963f34d5897fd42262e7232a81e39a276405d9360f5e932b355cad",
+    "source_url": "https://documents.worldbank.org/en/publication/documents-reports/documentdetail/987471542742554246",
+    "download_url": "https://documents.worldbank.org/curated/en/987471542742554246/pdf/128301-9781464813252.pdf",
+    "license": "CC-BY-3.0-IGO",
+    "license_url": "https://creativecommons.org/licenses/by/3.0/igo/",
+    "attribution": "World Bank. 2019. Information and Communications for Development 2018: Data-Driven Development.",
+    "license_notes": "The publication notes that separately credited third-party components may require additional permission.",
+    "generator": null,
+    "languages": ["en"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["international-report", "statistical-report"],
+    "layouts": ["multi-column", "cross-page-tables", "table-of-contents", "footnotes"],
+    "modalities": ["text", "table", "chart", "map", "figure"],
+    "risks": ["long-document", "cross-page-table", "caption-linking", "numeric-fidelity", "reading-order"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": null,
+  "notes": "包含统计表、图表、脚注和长附录，适合多模态与长文档评测。"
+}

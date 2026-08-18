@@ -1,0 +1,2 @@
+evaluation_id,revision,environment,case_id,attempt,status,task_id,run_id,started_at,finished_at,duration_seconds,human_interventions,goal_completion,result_correctness,tool_planning,permission_safety,observability,recovery_idempotency,experience_efficiency,blocking_behavior,defect_ids,owner_tags,evidence_refs,reviewer_notes
+<evaluation-id>,<git-sha>,<environment>,<case-id>,1,not_run,,,<iso8601>,,0,0,,,,,,,,false,,,,

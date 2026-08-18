@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "joss-peat-2025",
+  "title": "PDF Entity Annotation Tool (PEAT)",
+  "status": "annotated",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/joss-peat-2025.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 641137,
+    "page_count": 4,
+    "sha256": "08bcf2d529714d0af8ee04fadb392995a6b22a59210a58833963bb97aa192c85",
+    "source_url": "https://joss.theoj.org/papers/10.21105/joss.05336",
+    "download_url": "https://joss.theoj.org/papers/10.21105/joss.05336.pdf",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Stahl et al. (2025), PDF Entity Annotation Tool, JOSS 10(108), 5336",
+    "license_notes": null,
+    "generator": null,
+    "languages": ["en"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["scientific-paper", "software-paper"],
+    "layouts": ["metadata-sidebar", "single-column", "references", "author-affiliations"],
+    "modalities": ["text", "figure", "code"],
+    "risks": ["column-order", "hyphenation", "citation-boundaries", "figure-caption-linking"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": "annotations/joss-peat-2025.json",
+  "notes": "4 页已完成 Codex 辅助视觉 draft 标注；独立复核前不得提升为 verified。"
+}

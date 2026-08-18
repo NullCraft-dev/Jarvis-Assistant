@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "case_id": "generated-multimodal-smoke-v1",
+  "title": "确定性生成的多模态 PDF 冒烟案例",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "generated",
+    "relative_path": "corpus/generated/multimodal-fixture.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": null,
+    "page_count": null,
+    "sha256": null,
+    "source_url": null,
+    "download_url": null,
+    "license": "repository-generated-fixture",
+    "license_url": null,
+    "attribution": "Jarvis Assistant repository fixture",
+    "license_notes": null,
+    "generator": "../tests/fixtures/create_multimodal_fixture.py",
+    "languages": [
+      "zh-CN",
+      "en"
+    ],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": [
+      "synthetic-fixture"
+    ],
+    "layouts": [
+      "single-column"
+    ],
+    "modalities": [
+      "text",
+      "table",
+      "figure",
+      "formula"
+    ],
+    "risks": [
+      "reading-order",
+      "element-linking",
+      "modality-routing"
+    ]
+  },
+  "evaluation_stages": [
+    "preprocessing",
+    "chunking",
+    "embedding",
+    "retrieval",
+    "generation",
+    "end_to_end"
+  ],
+  "annotation_path": null,
+  "notes": "登记现有 fixture generator；生成原文并建立人工金标后改为 annotated。"
+}

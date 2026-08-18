@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "irs-publication-15t-2026",
+  "title": "IRS Publication 15-T (2026)",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/irs-publication-15t-2026.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 2480887,
+    "page_count": 71,
+    "sha256": "31b3e2428628e8d2e40f6266c2c8f1b9b0b6ccd24607895f9b3be3d9d306d3fb",
+    "source_url": "https://www.irs.gov/publications/p15t",
+    "download_url": "https://www.irs.gov/pub/irs-pdf/p15t.pdf",
+    "license": "US-Government-Work",
+    "license_url": "https://www.usa.gov/government-copyright",
+    "attribution": "Internal Revenue Service, Publication 15-T (2026)",
+    "license_notes": "Official U.S. federal government publication.",
+    "generator": null,
+    "languages": ["en"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["tax-publication", "reference-tables"],
+    "layouts": ["dense-tables", "multi-column", "repeated-table-headers"],
+    "modalities": ["text", "table", "formula"],
+    "risks": ["table-structure", "cross-page-table", "numeric-fidelity", "column-order"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": null,
+  "notes": "用于密集数字表、跨页表头和精确数值问答。"
+}

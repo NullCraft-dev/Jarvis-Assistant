@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "nist-ai-rmf-1-0",
+  "title": "NIST Artificial Intelligence Risk Management Framework 1.0",
+  "status": "planned",
+  "split": "development",
+  "document": {
+    "kind": "public",
+    "relative_path": "corpus/documents/nist-ai-rmf-1-0.pdf",
+    "mime_type": "application/pdf",
+    "size_bytes": 1946127,
+    "page_count": 48,
+    "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+    "source_url": "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10",
+    "download_url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=936225",
+    "license": "US-Government-Work",
+    "license_url": "https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-and-software",
+    "attribution": "Tabassi, E. (2023), NIST AI 100-1, National Institute of Standards and Technology",
+    "license_notes": "NIST work; independently credited third-party material, if present, requires separate review before reuse.",
+    "generator": null,
+    "languages": ["en"],
+    "privacy": "public"
+  },
+  "coverage": {
+    "document_types": ["government-framework", "technical-report"],
+    "layouts": ["single-column", "section-hierarchy", "callout-boxes"],
+    "modalities": ["text", "table", "diagram"],
+    "risks": ["heading-hierarchy", "reading-order", "cross-page-context", "acronyms"]
+  },
+  "evaluation_stages": ["preprocessing", "chunking", "embedding", "retrieval", "generation", "end_to_end"],
+  "annotation_path": null,
+  "notes": "适合框架层级、定义列表、callout 与跨章节 query。"
+}
