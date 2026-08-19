@@ -4,7 +4,9 @@ Jarvis Assistant 是一个本地优先的个人 AI Agent 控制台。它以 Web 
 
 > 当前版本：`1.0.0`（private release）
 
-![Jarvis Assistant 命令中心](docs/assets/operator-console-x/08-command-chat-view.png)
+![Jarvis Assistant 当前主界面](docs/assets/readme-main-interface.jpg)
+
+> 截图展示 `v1.0.0` 当前 Web 主界面；后续版本将持续优化前端的信息架构与交互体验。
 
 ## 核心能力
 
