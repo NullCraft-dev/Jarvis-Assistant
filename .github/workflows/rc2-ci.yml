@@ -1,4 +1,4 @@
-name: RC2 deterministic gate
+name: CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
 
 concurrency:
-  group: rc2-ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -18,16 +18,18 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: apps/gateway/go.mod
           cache-dependency-path: apps/gateway/go.sum
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
@@ -36,11 +38,12 @@ jobs:
             packages/shared/package-lock.json
 
       - name: Set up Conda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
         with:
           activate-environment: jarvis-assistant
           python-version: "3.12"
-          auto-activate-base: false
+          auto-activate: false
+          channels: defaults
 
       - name: Install JavaScript dependencies
         run: |
@@ -62,7 +65,7 @@ jobs:
 
       - name: Upload gate report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: rc2-gate-${{ github.run_id }}
           path: .local/release-gate/

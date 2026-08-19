@@ -247,12 +247,13 @@ FastAPI 不适合：
 
 LangChain / LangGraph 是 Python Agent Worker 内的能力和编排组件，不是整个项目的最终真源。
 
-### 当前依赖基线（2026-08-02，P6-2）
+### 当前依赖基线（2026-08-19）
 
-- 生产热路径已经使用 LangGraph `StateGraph`，项目直接声明 `langgraph>=0.2,<1.0`。
+- 生产热路径已经使用 LangGraph `StateGraph`，项目直接声明 `langgraph>=1.0.10,<2.0`。
 - 项目显式精确锁定 LangChain Core 1.5.1、LangChain OpenAI 1.4.1、LangChain DeepSeek 1.1.0；
-  LangGraph 为 0.6.11，LangGraph Checkpoint 为 3.0.1。项目 `.venv`、`uv.lock` 与实际生产 Conda 环境
-  已对齐，不安装完整 `langchain` 聚合包。
+  当前锁文件使用 LangGraph 1.2.11、LangGraph Checkpoint 4.2.0 和 LangGraph SDK 0.4.2。Checkpoint、SDK
+  与 Cryptography 同时声明安全版本下限，使 CI 的普通 `pip install` 与 `uv.lock` 都不会重新解析到已知
+  易受攻击版本。项目不安装完整 `langchain` 聚合包。
 - DeepSeek 使用官方 `ChatDeepSeek`，自定义 OpenAI-compatible 使用 `ChatOpenAI` 的项目窄适配；两者
   都实现项目 `ModelProvider`，框架消息和异常不进入 Runtime 或 Web 契约。
 - `JARVIS_MODEL_ADAPTER=langchain` 是默认生产路径；`direct` 保留原同步 `httpx` Provider 作为显式

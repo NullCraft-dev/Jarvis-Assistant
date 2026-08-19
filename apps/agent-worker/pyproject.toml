@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "jarvis-worker"
 version = "1.0.0"
 description = "Jarvis Python Agent Worker Runtime — 消费 Redis run queue，执行 Agent loop，产出 RuntimeEvent"
+license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
 dependencies = [
     "redis>=5.0,<6.0",
@@ -20,7 +21,11 @@ dependencies = [
     # MCP Python SDK v1 是当前稳定线；v2 在 2026-07 仍为预发布，先显式阻止破坏性升级。
     "mcp>=1.27,<2.0",
     # Runtime 内部状态图；不替代 ToolGateway、PermissionManager 或 Storage。
-    "langgraph>=0.2,<1.0",
+    "langgraph>=1.0.10,<2.0",
+    # 安全下限同时约束 pip 安装；CI 不依赖 uv.lock 解析传递依赖。
+    "langgraph-checkpoint>=4.1.1,<5.0",
+    "langgraph-sdk>=0.3.15,<1.0",
+    "cryptography>=50.0.0,<51.0",
     # P6 模型适配层。Core 显式锁定，供应商 integration 只实现项目 ModelProvider。
     "langchain-core==1.5.1",
     "langchain-openai==1.4.1",
@@ -31,9 +36,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
+    "pytest>=9.0.3,<10.0",
     "fakeredis[lua]>=2.20",
-    "pytest-asyncio>=0.24,<1.0",
+    "pytest-asyncio>=1.0,<2.0",
     "ruff>=0.12,<1.0",
 ]
 

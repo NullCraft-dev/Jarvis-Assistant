@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全漏洞报告
+    url: https://github.com/NullCraft-dev/Jarvis-Assistant/security/advisories/new
+    about: 请通过私有安全报告渠道提交漏洞、凭据泄漏或隐私问题。
+  - name: 使用与支持说明
+    url: https://github.com/NullCraft-dev/Jarvis-Assistant/blob/main/SUPPORT.md
+    about: 创建 Issue 前请先阅读支持范围与信息准备要求。
