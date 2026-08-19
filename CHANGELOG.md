@@ -12,6 +12,8 @@
 - PDF RAG、页码引用、多文档检索和知识库笔记。
 - 任务刷新、暂停、恢复、取消及关键故障恢复链路。
 - 首次启动检查、结构化运行诊断和确定性 CI 门禁。
+- 公开前依赖安全基线：修复 npm、LangGraph、Checkpoint、SDK、Cryptography 和 pytest 已知漏洞告警。
+- 日志初始化可与 pytest、Uvicorn 等宿主 handler 共存，并只释放自身创建的 handler。
 
 ### Validation
 

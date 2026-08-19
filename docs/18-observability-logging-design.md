@@ -178,6 +178,10 @@ HTTP request
 | `NO_COLOR` | 空 | 设置后禁用终端颜色 |
 | `JARVIS_GATEWAY_SUMMARY_INTERVAL` | `5m` | Gateway 聚合运行摘要间隔；Go duration 格式，`off` 或 `0` 禁用 |
 
+Python 日志初始化只把自身创建的终端和滚动文件 handler 视为幂等标记。pytest、Uvicorn 或其他宿主进程
+预先安装的 handler 不得阻止 Jarvis 初始化，也不会在 `shutdown_logging()` 时被误关闭；Jarvis handler
+会单独标记、路由和释放。
+
 ## 不记录的内容
 
 - 高频心跳（保持 DEBUG 或不记录）
@@ -204,7 +208,8 @@ HTTP request
 4. 敏感字段被脱敏。
 5. 文件中不存在 ANSI escape sequence。
 6. 日志目录不可写不会导致核心流程崩溃。
-7. 现有 Go tests、Python pytest、Web build 不回归。
+7. 宿主进程预装 handler 时，终端和文件日志仍正常，关闭时保留宿主 handler。
+8. 现有 Go tests、Python pytest、Web build 不回归。
 
 ## 实现文件
 

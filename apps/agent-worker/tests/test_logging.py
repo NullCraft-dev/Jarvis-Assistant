@@ -396,6 +396,24 @@ class TestSetupLoggingIntegration:
         finally:
             shutdown_logging()
 
+    def test_foreign_handler_does_not_block_or_get_removed(self, monkeypatch, tmp_path):
+        """宿主或测试框架的 handler 不得阻止 Jarvis 初始化，也不得被关闭。"""
+        monkeypatch.setenv("JARVIS_LOG_DIR", str(tmp_path))
+        monkeypatch.setenv("JARVIS_INSTANCE_ID", "worker-01")
+        logger = logging.getLogger("jarvis_worker")
+        foreign_handler = logging.NullHandler()
+        logger.addHandler(foreign_handler)
+        try:
+            try:
+                setup_logging(level=logging.INFO)
+                logging.getLogger("jarvis_worker.test").info("保留外部 handler")
+                assert (tmp_path / "worker-worker-01.log").is_file()
+            finally:
+                shutdown_logging()
+            assert foreign_handler in logger.handlers
+        finally:
+            logger.removeHandler(foreign_handler)
+
     def test_file_output_is_plain_text(self, monkeypatch, tmp_path):
         monkeypatch.setenv("JARVIS_LOG_DIR", str(tmp_path))
         monkeypatch.setenv("JARVIS_INSTANCE_ID", "worker-01")

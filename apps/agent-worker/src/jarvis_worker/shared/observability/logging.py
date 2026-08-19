@@ -37,6 +37,7 @@ _DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 _MAX_MESSAGE_LENGTH = 4096
 _MAX_CONTEXT_VALUE_LENGTH = 128
 _TRACE_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+_OWNED_HANDLER_ATTR = "_jarvis_owned_handler"
 
 # 敏感键名（大小写不敏感匹配）
 _SENSITIVE_KEYS = {
@@ -488,12 +489,14 @@ def setup_logging(
     root.setLevel(level)
     root.propagate = False
 
-    # 避免重复添加（幂等）
-    if root.handlers:
+    # 避免重复添加（幂等）。测试框架或宿主进程可能预先安装自己的
+    # handler；它们不能阻止 Jarvis 创建控制台和文件输出。
+    if any(getattr(handler, _OWNED_HANDLER_ATTR, False) for handler in root.handlers):
         return
 
     # ── 控制台 handler（彩色，stderr）──
     console = logging.StreamHandler(sys.stderr)
+    setattr(console, _OWNED_HANDLER_ATTR, True)
     console.setLevel(level)
     console.setFormatter(JarvisFormatter(
         use_color=_use_color(),
@@ -504,11 +507,17 @@ def setup_logging(
     # ── 文件 handler（无颜色，滚动）──
     file_handler = _create_file_handler(log_basename, level, service_instance)
     if file_handler is not None:
+        setattr(file_handler, _OWNED_HANDLER_ATTR, True)
         root.addHandler(file_handler)
 
     # Uvicorn 等服务级 logger 也必须使用相同的 7 列格式。正常 HTTP
     # 请求由应用自己的中间件按 DEBUG/INFO/ERROR 记录，不重复输出 access log。
-    _route_external_loggers(root.handlers)
+    owned_handlers = [
+        handler
+        for handler in root.handlers
+        if getattr(handler, _OWNED_HANDLER_ATTR, False)
+    ]
+    _route_external_loggers(owned_handlers)
 
     # ── 抑制第三方库日志噪音 ──
     _quiet_third_party_loggers()
@@ -524,12 +533,18 @@ def setup_logging(
 
 
 def shutdown_logging() -> None:
-    """安全关闭日志系统（刷新并关闭所有 handler）。"""
+    """安全关闭 Jarvis 创建的 handler，并保留宿主进程的 handler。"""
     root = logging.getLogger("jarvis_worker")
     for name in ("uvicorn", "uvicorn.error", "uvicorn.access"):
         external = logging.getLogger(name)
-        external.handlers.clear()
+        external.handlers = [
+            handler
+            for handler in external.handlers
+            if not getattr(handler, _OWNED_HANDLER_ATTR, False)
+        ]
     for handler in root.handlers[:]:
+        if not getattr(handler, _OWNED_HANDLER_ATTR, False):
+            continue
         handler.flush()
         handler.close()
         root.removeHandler(handler)
