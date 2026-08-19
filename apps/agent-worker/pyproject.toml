@@ -19,7 +19,7 @@ dependencies = [
     "fastapi>=0.115,<1.0",
     "uvicorn[standard]>=0.30,<1.0",
     # MCP Python SDK v1 是当前稳定线；v2 在 2026-07 仍为预发布，先显式阻止破坏性升级。
-    "mcp>=1.27,<2.0",
+    "mcp>=1.27,<3.0",
     # Runtime 内部状态图；不替代 ToolGateway、PermissionManager 或 Storage。
     "langgraph>=1.0.10,<2.0",
     # 安全下限同时约束 pip 安装；CI 不依赖 uv.lock 解析传递依赖。
