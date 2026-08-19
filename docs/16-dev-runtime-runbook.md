@@ -247,7 +247,7 @@ scripts/dev.sh
 - Go toolchain。
 - Node.js + npm。
 - Conda，以及名为 `jarvis-assistant` 的本地开发环境；缺失时 `scripts/dev.sh setup` 自动创建 Python 3.12 环境。
-- `pyproject.toml` 是 Python 依赖真源，依赖安装到 Conda 环境；默认启动链路不使用 uv 的项目虚拟环境。
+- uv（CI 固定使用 0.12.5）；`pyproject.toml` 声明依赖范围，`uv.lock` 锁定完整依赖图，依赖同步到现有 Conda 环境。
 
 推荐安装方式：
 
@@ -258,8 +258,10 @@ scripts/dev.sh setup
 如需单独更新 Python 依赖：
 
 ```bash
-conda run -n jarvis-assistant \
-  python -m pip install -e "./apps/agent-worker[dev]"
+agent_python_prefix="$(conda run -n jarvis-assistant python -c 'import sys; print(sys.prefix)')"
+UV_PROJECT_ENVIRONMENT="$agent_python_prefix" uv lock --project apps/agent-worker --check
+UV_PROJECT_ENVIRONMENT="$agent_python_prefix" \
+  uv sync --project apps/agent-worker --frozen --extra dev --inexact
 ```
 
 `scripts/dev.sh` 未显式配置时会将项目根目录同时作为默认工作区和唯一允许根目录。macOS/Linux 下多个允许根目录使用冒号分隔；值会同时传给 Control Plane、Gateway 和 Worker，三端不得各自使用不同范围。
