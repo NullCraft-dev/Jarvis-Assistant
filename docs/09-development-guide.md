@@ -366,7 +366,8 @@ cp apps/agent-worker/.env.example apps/agent-worker/.env
 ```bash
 conda activate jarvis-assistant
 cd apps/agent-worker
-pip install -e ".[dev]"
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv lock --check
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv sync --frozen --extra dev --inexact
 
 # DeepSeek 生产模式启动
 JARVIS_MODEL_PROVIDER=deepseek \
@@ -538,7 +539,8 @@ cd apps/agent-worker
 
 # 本地开发默认使用 jarvis-assistant conda 环境
 conda activate jarvis-assistant
-pip install -e ".[dev]"
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv lock --check
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv sync --frozen --extra dev --inexact
 
 # 运行测试（使用 fakeredis，不依赖真实 Redis）
 conda run -n jarvis-assistant python -m pytest -q   # 144 tests
@@ -555,9 +557,10 @@ Ruff 属于 `dev` 可选依赖，不需要启动 PostgreSQL、Redis、Gateway、
 代码结构严格门，新文件还必须通过格式检查。新增 Python 代码在提交前必须同时通过 Ruff、
 compileall 和相关 pytest；不得用全局 ignore 掩盖本次新增问题。
 
-`pyproject.toml` 是 agent-worker 的依赖真源；`jarvis-assistant` conda 环境是本机开发环境。
-本地测试和运行默认使用该 conda 环境，避免误用系统 Python 或 Homebrew Python。
-服务器部署时可继续复用同一份 `pyproject.toml`，在 venv、容器或 CI 环境中执行 `pip install .`。
+`pyproject.toml` 是 agent-worker 的直接依赖声明真源，`uv.lock` 是仓库开发与 CI 的完整版本锁；
+`jarvis-assistant` conda 环境是本机 Python 运行环境。`uv sync --frozen` 将锁定依赖同步到该环境，
+避免误用系统 Python 或随时间漂移的间接依赖。标准包部署仍可在 venv 或容器中执行 `pip install .`，
+但 CI 必须校验并使用 `uv.lock`。
 
 **3A 已知债务：**
 

@@ -45,13 +45,22 @@ jobs:
           auto-activate: false
           channels: defaults
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: "0.12.5"
+
       - name: Install JavaScript dependencies
         run: |
           npm ci --prefix packages/shared
           npm ci --prefix apps/web
 
       - name: Install Agent Worker dependencies
-        run: conda run -n jarvis-assistant python -m pip install -e "./apps/agent-worker[dev]"
+        run: |
+          agent_python_prefix="$(conda run -n jarvis-assistant python -c 'import sys; print(sys.prefix)')"
+          uv lock --project apps/agent-worker --check
+          UV_PROJECT_ENVIRONMENT="$agent_python_prefix" \
+            uv sync --project apps/agent-worker --frozen --extra dev --inexact
 
       - name: Fetch hash-locked P0 evaluation fixtures
         run: |

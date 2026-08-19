@@ -182,6 +182,7 @@ local_reranker_enabled() {
 check_project() {
   need_cmd docker
   need_cmd conda
+  need_cmd uv
   need_cmd go
   need_cmd npm
   need_cmd curl
@@ -189,6 +190,7 @@ check_project() {
   docker compose version >/dev/null 2>&1 || fail "Docker Compose 不可用"
   [ -f "$ROOT_DIR/compose.yaml" ] || fail "缺少 compose.yaml"
   [ -f "$AGENT_DIR/pyproject.toml" ] || fail "缺少 Python Worker pyproject.toml"
+  [ -f "$AGENT_DIR/uv.lock" ] || fail "缺少 Python Worker uv.lock"
   [ -f "$WEB_DIR/package.json" ] || fail "缺少 Web package.json"
   [ -f "$GATEWAY_DIR/go.mod" ] || fail "缺少 Gateway go.mod"
 }
@@ -197,8 +199,27 @@ conda_env_exists() {
   conda env list | sed 's/\*//g' | awk '{print $1}' | grep -Fxq "$CONDA_ENV"
 }
 
+conda_env_prefix() {
+  conda run -n "$CONDA_ENV" python -c 'import sys; print(sys.prefix)' | tr -d '\r'
+}
+
+sync_python_environment() {
+  local agent_python_prefix
+  agent_python_prefix="$(conda_env_prefix)"
+  uv lock --project "$AGENT_DIR" --check
+  env UV_PROJECT_ENVIRONMENT="$agent_python_prefix" \
+    uv sync --project "$AGENT_DIR" --frozen --extra dev --inexact
+}
+
 check_conda_runtime() {
+  local agent_python_prefix
   conda_env_exists || fail "Conda 环境 $CONDA_ENV 不存在；请先运行 scripts/dev.sh setup"
+  agent_python_prefix="$(conda_env_prefix)"
+  uv lock --project "$AGENT_DIR" --check >/dev/null 2>&1 \
+    || fail "Python Worker uv.lock 与 pyproject.toml 不一致；请更新锁文件"
+  env UV_PROJECT_ENVIRONMENT="$agent_python_prefix" \
+    uv sync --project "$AGENT_DIR" --frozen --extra dev --inexact --check >/dev/null 2>&1 \
+    || fail "Conda 环境 $CONDA_ENV 未按 uv.lock 同步；请运行 scripts/dev.sh setup"
   conda run -n "$CONDA_ENV" python -c \
     'import alembic, asyncpg, fastapi, langchain_core, langchain_deepseek, langchain_openai, redis, sqlalchemy, uvicorn, jarvis_worker' \
     >/dev/null 2>&1 \
@@ -267,8 +288,7 @@ setup_dependencies() {
   fi
 
   log "安装 Python Worker / Control Plane 依赖..."
-  conda run --no-capture-output -n "$CONDA_ENV" \
-    python -m pip install -e "${AGENT_DIR}[dev]"
+  sync_python_environment
 
   log "安装 Web 依赖..."
   (cd "$WEB_DIR" && npm ci)

@@ -40,6 +40,7 @@ Go 不执行 Agent loop，Python Worker 不绕过 ToolGateway，Redis 不保存�
 - macOS 或 Linux
 - Docker Desktop / Docker Engine
 - Conda
+- uv（CI 固定使用 0.12.5）
 - Node.js 22+
 - Go 1.25+
 - DeepSeek API key

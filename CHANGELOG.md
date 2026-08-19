@@ -14,6 +14,7 @@
 - 首次启动检查、结构化运行诊断和确定性 CI 门禁。
 - 公开前依赖安全基线：修复 npm、LangGraph、Checkpoint、SDK、Cryptography 和 pytest 已知漏洞告警。
 - 日志初始化可与 pytest、Uvicorn 等宿主 handler 共存，并只释放自身创建的 handler。
+- Python 开发环境与 CI 通过 `uv.lock` 冻结同步，同时保留标准 `pip install .` 部署兼容性。
 
 ### Validation
 

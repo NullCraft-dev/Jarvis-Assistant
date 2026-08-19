@@ -45,7 +45,8 @@ jarvis_worker/
 ```bash
 conda activate jarvis-assistant
 cd apps/agent-worker
-pip install -e ".[dev]"
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv lock --check
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv sync --frozen --extra dev --inexact
 
 # 配置本地模型与密钥（必需）
 cp .env.example .env
@@ -109,7 +110,8 @@ python eval/runners/fetch_corpus.py \
   --case nist-ai-rmf-1-0 \
   --case nasa-systems-engineering-handbook-rev2 \
   --case world-bank-data-driven-development-2018
-pip install -e ".[dev]"
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv lock --check
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv sync --frozen --extra dev --inexact
 pytest -v
 ```
 

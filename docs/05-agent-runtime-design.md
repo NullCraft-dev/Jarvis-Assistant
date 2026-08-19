@@ -1333,11 +1333,12 @@ Mock runner 模拟 simple_success 场景，产生固定 5 个事件：
 ```bash
 conda activate jarvis-assistant
 cd apps/agent-worker
-pip install -e ".[dev]"
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv lock --check
+UV_PROJECT_ENVIRONMENT="$CONDA_PREFIX" uv sync --frozen --extra dev --inexact
 pytest -v
 ```
 
-`pyproject.toml` 是依赖真源，conda 只负责本机 Python 运行环境隔离。后续部署到服务器时不要求复用本机 conda 环境，可在服务器 venv、容器或 CI 环境中基于同一份 `pyproject.toml` 执行 `pip install .`。
+`pyproject.toml` 声明依赖范围，`uv.lock` 锁定开发与 CI 的完整依赖图，conda 只负责本机 Python 运行环境隔离。作为标准 Python 包部署时仍可基于 `pyproject.toml` 执行 `pip install .`，但仓库开发和 CI 必须使用冻结锁文件。
 
 ### 约束
 
