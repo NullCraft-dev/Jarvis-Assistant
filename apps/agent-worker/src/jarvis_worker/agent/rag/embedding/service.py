@@ -13,7 +13,7 @@ from jarvis_worker.agent.rag.contracts import (
     RagIngestionStatus,
     RagVectorRecord,
 )
-from jarvis_worker.agent.rag.embedding.openai import OpenAIEmbeddingError
+from jarvis_worker.agent.rag.embedding.compatible import EmbeddingProviderError
 from jarvis_worker.database.unit_of_work import PostgresUnitOfWork
 from jarvis_worker.shared.domain.models import AuditLog, utcnow
 
@@ -94,7 +94,7 @@ class RagEmbeddingService:
                 job.report_progress(
                     progress=replace(
                         job.progress,
-                        active_executor="openai-embedding",
+                        active_executor=f"{self._provider.provider_name}-embedding",
                         embedding_total=len(chunks),
                         embedding_completed=0,
                     ),
@@ -107,8 +107,8 @@ class RagEmbeddingService:
         try:
             vectors = await self._provider.embed_documents([chunk.content for chunk in chunks])
             if len(vectors) != len(chunks):
-                raise OpenAIEmbeddingError(
-                    "OPENAI_EMBEDDING_INVALID_RESPONSE",
+                raise EmbeddingProviderError(
+                    "RAG_EMBEDDING_INVALID_RESPONSE",
                     "Embedding 数量与 chunks 不匹配",
                     recoverable=True,
                 )
@@ -120,7 +120,7 @@ class RagEmbeddingService:
             )
         except asyncio.CancelledError:
             raise
-        except OpenAIEmbeddingError as exc:
+        except EmbeddingProviderError as exc:
             return await self._fail(
                 worker_id=worker_id,
                 job_id=job.id,

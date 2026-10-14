@@ -382,7 +382,7 @@ python -m jarvis_worker.main
 #### 独立 RAG Worker
 
 RAG 建库不在 Agent Worker 中执行。它使用独立进程轮询 PostgreSQL `rag_ingestion_jobs`，顺序执行
-PyMuPDF/PaddleOCR-VL 预处理、分块、OpenAI Embedding 与 pgvector 入库：
+PyMuPDF/PaddleOCR-VL 预处理、分块、Provider Embedding 与 pgvector 入库：
 
 ```bash
 cd apps/agent-worker
@@ -395,7 +395,25 @@ python -m jarvis_worker.agent.rag.worker
 `scripts/dev.sh` 会统一启动和停止该进程；本地 MLX-VLM 可用时默认选择 `paddleocr-vl`，否则明确
 选择 `native-only`。显式要求 `paddleocr-vl` 但本地 VLM 未启用时，启动脚本直接失败，不静默降级。
 RAG Worker 不读取 `JARVIS_MODEL_*`，其 ID、轮询、资源目录、视觉 Provider 和 Embedding 配置全部
-使用 `JARVIS_RAG_*`。OpenAI Key 仍只通过 `JARVIS_RAG_EMBEDDING_API_KEY_ENV` 指向的环境变量读取。
+使用 `JARVIS_RAG_*`。`JARVIS_RAG_EMBEDDING_PROVIDER` 只接受 `openai` 或 `dashscope`；
+未配置时仍默认 OpenAI `text-embedding-3-small`、1536 维、批大小 128。DashScope 可显式配置为：
+
+```dotenv
+JARVIS_RAG_EMBEDDING_PROVIDER=dashscope
+JARVIS_RAG_EMBEDDING_MODEL=qwen3.7-text-embedding
+JARVIS_RAG_EMBEDDING_API_KEY_ENV=DASHSCOPE_API_KEY
+JARVIS_RAG_EMBEDDING_DIMENSIONS=1536
+JARVIS_RAG_EMBEDDING_BATCH_SIZE=20
+JARVIS_RAG_EMBEDDING_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+```
+
+凭据只从命名环境变量读取；真实 `DASHSCOPE_API_KEY` 不得进入文档、DTO、日志或数据库。
+必须同时更新已有 `.env` 中的 provider/model/api_key_env/batch_size；只改变 provider 不会覆盖
+已有显式配置。DashScope 批大小上限为 20，可指定官方地域/Workspace 专属 HTTPS endpoint。
+Agent Worker 与独立 RAG Worker 使用同一 Provider factory，错误保留安全错误码和有界重试语义。
+本补丁不改变数据库 schema，不自动重建索引。现有文档保留 provider/model/dimensions 标签；
+切换 Provider 或模型后知识库标记索引过期，语义检索按 Provider 与模型过滤，须通过现有受控重建
+入口显式重建文档才能恢复相应向量召回。
 `JARVIS_RAG_STRUCTURE_CACHE_ROOT` 可选；默认使用 Workspace 下的 `.local/rag-cache/structure`。缓存按
 PDF 内容、页/区域、DPI、路由策略和 Provider 版本寻址，只用于复用昂贵的本地视觉推理。修改解析策略或
 模型版本会自然产生新键；缓存损坏按 miss 处理，不得把它当作 Job 状态、审计或可检索数据真源。

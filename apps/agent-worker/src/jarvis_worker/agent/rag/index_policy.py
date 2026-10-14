@@ -27,7 +27,7 @@ class RagIndexTarget:
             ingestion_policy_version=INGESTION_POLICY_VERSION,
             parser_version=PdfExtractionPolicy().parser_version,
             chunker_version=MultimodalChunkRouter().version,
-            embedding_provider="openai",
+            embedding_provider=embedding.rag_embedding_provider,
             embedding_model=embedding.rag_embedding_model,
             embedding_dimensions=embedding.rag_embedding_dimensions,
         )

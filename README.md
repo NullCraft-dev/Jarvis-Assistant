@@ -2,7 +2,7 @@
 
 Jarvis Assistant 是一个本地优先的个人 AI Agent 控制台。它以 Web 界面作为当前产品入口，用独立的运行时、工具网关、权限系统、持久化和审计链路执行可观察、可暂停、可恢复的 Agent 任务。
 
-> 当前版本：`1.0.0`（公开开发预览）
+> 当前版本：`1.0.1`（公开开发预览）
 
 ![Jarvis Assistant 当前主界面](docs/assets/readme-main-interface.jpg)
 
@@ -44,7 +44,7 @@ Go 不执行 Agent loop，Python Worker 不绕过 ToolGateway，Redis 不保存�
 - Node.js 22+
 - Go 1.25+
 - DeepSeek API key
-- OpenAI API key（用于默认 RAG Embedding）
+- OpenAI API key（默认 RAG Embedding），或 DashScope API key（显式选择 Qwen Embedding）
 
 本地 MLX-VLM 与 BGE Reranker 是可选能力；未安装时可以使用明确配置的降级路径。
 
