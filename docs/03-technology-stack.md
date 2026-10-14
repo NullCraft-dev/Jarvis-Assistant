@@ -378,7 +378,8 @@ RagChunkElementLinkStore
 - RAG 关系型元数据：由 PostgreSQL 保存文档、入库作业、分块正文与来源定位。
 - 向量索引：通过 `VectorIndex` 端口隔离，当前 adapter 使用 pgvector 0.8.2、1536 维 cosine HNSW；
   Embedding 默认使用 OpenAI `text-embedding-3-small`，密钥只从本地环境变量读取，
-  领域层不绑定具体实现。
+  领域层不绑定具体实现。RAG Embedding factory 同时支持显式选择的
+  DashScope `qwen3.7-text-embedding`（1536 维，批大小上限 20），默认 OpenAI 行为保持兼容。
 - PDF 原生解析：使用 PyMuPDF 1.28.x，从受控 Artifact bytes 提取文字块、页面坐标、表格结构和
   图片裁剪；不接受任意文件路径，也不把解析能力暴露给 Renderer。
 - 本地文档视觉解析：Apple Silicon 使用完整 PaddleOCR-VL Pipeline，客户端执行 PP-DocLayout 系列
@@ -390,7 +391,7 @@ RagChunkElementLinkStore
 - RAG 执行进程：`python -m jarvis_worker.agent.rag.worker` 是独立于 Agent Worker 的常驻进程；
   第一版直接通过 PostgreSQL 的 claim/lease/retry 领取 RAG Job，顺序轮转 ingestion 与 embedding。
   Redis run queue 仍只承载 AgentRun，避免混淆两套任务语义。
-- RAG 在线检索：查询 Embedding 使用 OpenAI `text-embedding-3-small`，语义召回使用 pgvector
+- RAG 在线检索：查询 Embedding 使用与离线索引相同的 Provider 配置，语义召回使用 pgvector
   cosine HNSW；查询期 `ef_search`、迭代扫描、最大访问节点数和扫描内存通过 retrieval adapter 在
   单次事务内配置，不能修改连接池全局状态。数据库只提供距离顺序，有限候选的确定性 tie-break 由
   Python Retriever 完成。关键词路由使用 PostgreSQL 有界词项/短语覆盖，双路结果以归一化 RRF 融合。

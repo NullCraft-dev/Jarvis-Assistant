@@ -34,7 +34,7 @@ from jarvis_worker.agent.prompts.builder import PromptBuilder
 from jarvis_worker.agent.rag.answer import RagCitationValidator
 from jarvis_worker.agent.rag.embedding import (
     RagEmbeddingConfig,
-    create_openai_embedding_provider,
+    create_embedding_provider,
 )
 from jarvis_worker.agent.rag.evaluation.service import RagEvaluationTraceService
 from jarvis_worker.agent.rag.ingestion import RagIngestionCommandService
@@ -142,7 +142,7 @@ def create_worker_runtime(cfg: WorkerConfig) -> WorkerRuntimeComponents:
         ScheduledSourceIndex(get_session_factory),
         service_bridge,
     )
-    rag_embedding_provider = create_openai_embedding_provider(RagEmbeddingConfig.from_env())
+    rag_embedding_provider = create_embedding_provider(RagEmbeddingConfig.from_env())
     rag_reranker_config = LocalBgeRerankerConfig.from_env()
     rag_reranker_provider = (
         LocalBgeRerankerProvider(rag_reranker_config) if rag_reranker_config.enabled else None

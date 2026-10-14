@@ -8,7 +8,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from jarvis_worker.agent.artifacts.file_store import LocalArtifactFileStore
-from jarvis_worker.agent.rag.embedding.openai import create_openai_embedding_provider
+from jarvis_worker.agent.rag.embedding.factory import create_embedding_provider
 from jarvis_worker.agent.rag.embedding.service import RagEmbeddingService
 from jarvis_worker.agent.rag.ingestion.asset_store import LocalRagAssetFileStore
 from jarvis_worker.agent.rag.ingestion.service import RagIngestionService
@@ -98,7 +98,7 @@ async def create_rag_worker_runtime(config: RagWorkerConfig) -> RagWorkerRuntime
         else:
             log.warning("RAG Worker 使用 native-only；扫描页与复杂视觉元素不会被增强解析")
 
-        embedding_provider = create_openai_embedding_provider(config.embedding)
+        embedding_provider = create_embedding_provider(config.embedding)
         redis_client = create_redis_client(
             config.redis_addr,
             password=config.redis_password,

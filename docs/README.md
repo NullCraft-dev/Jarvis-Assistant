@@ -36,6 +36,8 @@
 | [27-p7-engineering-release-productization.md](./27-p7-engineering-release-productization.md) | P7 RC2 工程门禁、结构化报告、CI、升级恢复与运维产品化顺序 | 桌面封装、Multi-Agent、无证据的 RAG 算法优化 |
 | [28-real-world-usage-evaluation.md](./28-real-world-usage-evaluation.md) | 真实用户任务评测协议、版本化场景集、评分、证据、缺陷归因和候选阻断规则 | 单元测试实现、mock 场景和具体业务能力设计 |
 
+补丁范围与验收记录见 [v1.0.1 Embedding 兼容补丁](./29-v1.0.1-embedding-patch.md)。
+
 ## 推荐更新方式
 
 后续讨论时按主题更新：

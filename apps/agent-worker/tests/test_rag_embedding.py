@@ -9,11 +9,17 @@ import pytest
 
 from jarvis_worker.agent.rag.contracts import RagIngestionJob, RagIngestionStatus
 from jarvis_worker.agent.rag.embedding.config import RagEmbeddingConfig
+from jarvis_worker.agent.rag.embedding.dashscope import (
+    DashScopeEmbeddingError,
+    DashScopeEmbeddingProvider,
+)
+from jarvis_worker.agent.rag.embedding.factory import create_embedding_provider
 from jarvis_worker.agent.rag.embedding.openai import (
     OpenAIEmbeddingError,
     OpenAIEmbeddingProvider,
     create_openai_embedding_provider,
 )
+from jarvis_worker.agent.rag.index_policy import RagIndexTarget
 from jarvis_worker.database.models import RagChunkEmbeddingModel
 
 NOW = datetime(2026, 7, 27, tzinfo=timezone.utc)
@@ -89,6 +95,50 @@ async def test_openai_provider_sanitizes_remote_error():
     assert "secret upstream detail" not in str(caught.value)
 
 
+@pytest.mark.asyncio
+async def test_dashscope_provider_uses_qwen_contract_and_sanitizes_remote_error():
+    vector = [0.25] * 1536
+    requests = 0
+
+    async def handler(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        body = __import__("json").loads(request.content)
+        assert request.url.path == "/compatible-mode/v1/embeddings"
+        assert body == {
+            "model": "qwen3.7-text-embedding",
+            "input": ["query"],
+            "dimensions": 1536,
+            "encoding_format": "float",
+        }
+        return httpx.Response(
+            200,
+            json={"data": [{"index": 0, "embedding": vector}]},
+        )
+
+    async with httpx.AsyncClient(
+        base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        transport=httpx.MockTransport(handler),
+    ) as client:
+        provider = DashScopeEmbeddingProvider(api_key="test-only", client=client)
+        assert await provider.embed_query("query") == vector
+    assert requests == 1
+
+    async def rejected(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(401, json={"message": "sensitive upstream detail"})
+
+    async with httpx.AsyncClient(
+        base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        transport=httpx.MockTransport(rejected),
+    ) as client:
+        provider = DashScopeEmbeddingProvider(api_key="test-only", client=client)
+        with pytest.raises(DashScopeEmbeddingError) as caught:
+            await provider.embed_query("query")
+    assert caught.value.code == "DASHSCOPE_EMBEDDING_REQUEST_REJECTED"
+    assert caught.value.recoverable is False
+    assert "sensitive upstream detail" not in str(caught.value)
+
+
 def test_embedding_job_retries_without_reparsing_then_completes():
     job = _embedding_job()
     job.claim_embedding(
@@ -128,3 +178,46 @@ def test_provider_factory_resolves_only_named_environment_secret(monkeypatch):
     assert provider.provider_name == "openai"
     assert provider.model_name == "text-embedding-3-small"
     assert "test-only" not in repr(provider)
+
+
+def test_dashscope_config_and_factory_are_versioned_without_changing_openai_default(
+    monkeypatch,
+):
+    for name in (
+        "JARVIS_RAG_EMBEDDING_PROVIDER",
+        "JARVIS_RAG_EMBEDDING_MODEL",
+        "JARVIS_RAG_EMBEDDING_API_KEY_ENV",
+        "JARVIS_RAG_EMBEDDING_BASE_URL",
+        "JARVIS_RAG_EMBEDDING_BATCH_SIZE",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    assert RagEmbeddingConfig.from_env() == RagEmbeddingConfig()
+
+    monkeypatch.setenv("JARVIS_RAG_EMBEDDING_PROVIDER", "dashscope")
+    monkeypatch.setenv("JARVIS_TEST_DASHSCOPE_KEY", "test-only")
+    monkeypatch.setenv("JARVIS_RAG_EMBEDDING_API_KEY_ENV", "JARVIS_TEST_DASHSCOPE_KEY")
+    config = RagEmbeddingConfig.from_env()
+    provider = create_embedding_provider(config)
+
+    assert config.rag_embedding_model == "qwen3.7-text-embedding"
+    assert config.rag_embedding_dimensions == 1536
+    assert config.rag_embedding_batch_size == 20
+    assert provider.provider_name == "dashscope"
+    assert provider.model_name == "qwen3.7-text-embedding"
+    assert "test-only" not in repr(provider)
+
+
+def test_dashscope_batch_size_is_bounded(monkeypatch):
+    monkeypatch.setenv("JARVIS_RAG_EMBEDDING_PROVIDER", "dashscope")
+    monkeypatch.setenv("JARVIS_RAG_EMBEDDING_BATCH_SIZE", "21")
+    with pytest.raises(ValueError, match="1..20"):
+        RagEmbeddingConfig.from_env()
+
+
+def test_index_target_tracks_configured_embedding_provider(monkeypatch):
+    monkeypatch.setenv("JARVIS_RAG_EMBEDDING_PROVIDER", "dashscope")
+    monkeypatch.setenv("JARVIS_RAG_EMBEDDING_MODEL", "qwen3.7-text-embedding")
+    target = RagIndexTarget.current()
+    assert target.embedding_provider == "dashscope"
+    assert target.embedding_model == "qwen3.7-text-embedding"
+    assert target.embedding_dimensions == 1536

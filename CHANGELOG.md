@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.0.1 - 2026-10-14
+
+### Fixed
+
+- 修复显式使用 DashScope/Qwen Embedding 时 Agent Worker 与 RAG Worker 无法启动的问题。
+- 新增独立 DashScope Provider 与共享 factory；保留 OpenAI 默认值、1536 维索引和旧工厂入口。
+- Provider 错误通过索引和检索链路保留安全错误码与 recoverable 状态，批大小有界。
+- 索引目标正确记录 Provider；切换模型不自动迁移或重建已有知识库。
+
+### Validation
+
+- Python 全量测试 1649 passed；Web 测试 148 passed；类型、构建、Go test/vet 与 Ruff 检查通过。
+- 显式 DashScope 配置的真实请求成功返回 1536 维向量。
+- 未重新声明 v1.0.0 的 36/36 P0 真实使用结果为本补丁验收。
+
+### Upgrade
+
+- 使用 Qwen 时同时设置 provider、model、api_key_env 和 batch_size，见开发指南。
+- 无新增 migration；已有向量保留，切换 Provider/模型后需显式重建相应文档索引。
+
 ## 1.0.0 - 2026-08-18
 
 首个公开开发预览版本。

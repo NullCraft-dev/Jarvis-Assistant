@@ -16,7 +16,7 @@ from dataclasses import replace
 from typing import Any
 from uuid import UUID
 
-from jarvis_worker.agent.rag.embedding.openai import OpenAIEmbeddingError
+from jarvis_worker.agent.rag.embedding.compatible import EmbeddingProviderError
 from jarvis_worker.agent.rag.reranking.contracts import RagRerankResult
 from jarvis_worker.agent.rag.reranking.policy import PolicySelector
 from jarvis_worker.agent.rag.retrieval.contracts import (
@@ -177,7 +177,7 @@ class PgVectorCandidateRetriever(RagCandidateRetriever):
     async def prepare(self, plan: RagQueryPlan) -> RagPreparedQuery:
         try:
             vectors = [await self._embedding_provider.embed_query(query) for query in plan.queries]
-        except OpenAIEmbeddingError as exc:
+        except EmbeddingProviderError as exc:
             raise _error(exc.code, str(exc), "provider", exc.recoverable) from exc
         except Exception as exc:
             raise _error(
