@@ -29,7 +29,7 @@ dependencies = [
     # P6 模型适配层。Core 显式锁定，供应商 integration 只实现项目 ModelProvider。
     "langchain-core==1.5.1",
     "langchain-openai==1.4.1",
-    "langchain-deepseek==1.1.0",
+    "langchain-deepseek==1.1.1",
     "pymupdf>=1.28,<1.29",
     "pgvector>=0.4,<1.0",
 ]
