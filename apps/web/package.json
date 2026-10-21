@@ -14,7 +14,7 @@
     "@lucide/vue": "^1.23.0",
     "@mdit/plugin-katex": "^1.0.1",
     "@tailwindcss/vite": "^4.3.2",
-    "markdown-it": "^14.3.0",
+    "markdown-it": "^14.3.3",
     "naive-ui": "^2.44.1",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.3.2",
